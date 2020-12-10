@@ -5,12 +5,14 @@ import com.codegym.case4.repository.IBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class BookServiceImpl implements IBookService{
+public class BookServiceImpl implements IBookService {
     @Autowired
     private IBookRepository bookRepository;
 
@@ -31,12 +33,11 @@ public class BookServiceImpl implements IBookService{
 
     @Override
     public void remove(Long id) {
-        if(bookRepository.findById(id).isPresent())
-            bookRepository.findById(id).get().setDeleted(true);
+        bookRepository.remove(id);
     }
 
     @Override
     public Page<Book> findAllByTitleContainingAndDeletedIsFalse(String title, Pageable pageable) {
-        return bookRepository.findAllByTitleContainingAndDeletedIsFalse(title,pageable);
+        return bookRepository.findAllByTitleContainingAndDeletedIsFalse(title, pageable);
     }
 }

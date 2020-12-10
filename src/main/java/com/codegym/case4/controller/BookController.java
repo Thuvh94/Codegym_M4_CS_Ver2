@@ -11,10 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
@@ -62,17 +61,53 @@ public class BookController {
         return modelAndView;
     }
 
-//    @PostMapping("/create-customer")
-//    public ModelAndView saveCustomer(@Validated @ModelAttribute("customer") Customer customer, BindingResult bindingResult){
-//        if(bindingResult.hasFieldErrors()){
-//            ModelAndView modelAndView = new ModelAndView("/customer/create");
-//            return modelAndView;
+    @PostMapping("/create")
+    public ModelAndView saveCustomer(@Validated @ModelAttribute("book") Book book, BindingResult bindingResult){
+        if(bindingResult.hasFieldErrors()){
+            ModelAndView modelAndView = new ModelAndView("/book/create");
+            return modelAndView;
+        }
+        bookService.save(book);
+        ModelAndView modelAndView = new ModelAndView("/book/create");
+        modelAndView.addObject("book", new Book());
+        modelAndView.addObject("message", "New book is created successfully");
+        return modelAndView;
+//        Product product1 = new Product.ProductBuilder(product.getName())
+//                .description(product.getDescription()).build();
+//        MultipartFile multipartFile = product.getImage();
+//        String fileName = multipartFile.getOriginalFilename();
+//        try {
+//            FileCopyUtils.copy(product.getImage().getBytes(), new File(this.fileUpload + fileName));
+//        } catch (IOException e) {
+//            e.printStackTrace();
 //        }
-//        customerService.save(customer);
-//        ModelAndView modelAndView = new ModelAndView("/customer/create");
-//        modelAndView.addObject("customer", new Customer());
-//        modelAndView.addObject("message", "New customer created successfully");
-//        return modelAndView;
+//        product1.setImage(fileName);
+//        productService.save(product1);
+//        return new RedirectView("");
 //    }
+    }
+
+    // Delete function
+    @GetMapping("/delete/{id}")
+    public ModelAndView showDeleteForm(@PathVariable Long id){
+        Optional<Book> deletedBook = bookService.findById(id);
+        if(deletedBook!=null){
+            Book book = deletedBook.get();
+            ModelAndView modelAndView = new ModelAndView("/book/delete");
+            modelAndView.addObject("book",book);
+            return modelAndView;
+        }
+        else {
+            ModelAndView modelAndView = new ModelAndView("/error.404");
+            return modelAndView;
+        }
+    }
+
+    @PostMapping("/delete")
+    public String deleteCustomer(@ModelAttribute("book") Book book){
+        bookService.remove(book.getBookId());
+        return "redirect:list";
+    }
+
 
 }
