@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3><a th:href="@{/author}">list author</a></h3>
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
+<form th:action="@{/author/edit}" th:object="${author}" method="post">
+    <table align="center">
+        <tr>
+            <td><input th:field="*{authorId}" hidden="hidden"/></td>
+        </tr>
+        <tr>
+            <td>AuthorName</td>
+            <td><input type="text" th:field="*{authorName}" size="20"></td>
+        </tr>
+        <tr>
+            <td>AuthorDesc</td>
+            <td><textarea rows="4" cols="30" th:field="*{authorDesc}"></textarea></td>
+        </tr>
+        <td></td>
+        <td><input type="submit" value="update"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
