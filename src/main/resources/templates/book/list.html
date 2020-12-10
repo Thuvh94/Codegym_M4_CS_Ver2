@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book list</title>
+</head>
+<body>
+<a href="/book/create">Create new book</a>
+<h1>Books</h1>
+<form>
+    Search by title:
+    <input name="s" type="text"/>
+    <input type="submit" value="Search"/>
+</form>
+<br/>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Cover</th>
+        <th>Description</th>
+        <th>Published Date</th>
+        <th>Pages</th>
+        <th>Category</th>
+        <th>Author</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <th:block th:each="book : ${books}">
+        <tr>
+            <td th:text="${book.bookId}"></td>
+            <td th:text="${book.title}"></td>
+            <td>
+                <img th:src="${book.coverImg}">
+            </td>
+            <td th:text="${book.description}"></td>
+            <td th:text="${book.publishedDate}"></td>
+            <td th:text="${book.pages}"></td>
+            <td>
+                    <span th:each="category : ${book.categories}">
+                        <span th:text="${category.categoryName}"></span><br>
+                    </span>
+            </td>
+            <td th:text="${book.authorId.authorName}">Author</td>
+            <td><a th:href="@{/templates/templates/edit/__${book.bookId}__ }">Edit</a></td>
+            <td><a th:href="@{/templates/templates/delete__${book.bookId}__ }">Delete</a></td>
+        </tr>
+    </th:block>
+</table>
+<div>
+    <a th:href="@{'/books'(page=${books.number - 1})}" th:if="${books.hasPrevious()}">Previous</a>
+    <span th:text="${books.number + 1}"></span>/<span th:text="${books.totalPages}"></span>
+    <a th:href="@{'/books'(page=${books.number + 1})}" th:if="${books.hasNext()}">Next</a>
+</div>
+</body>
+</html>
