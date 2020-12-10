@@ -109,5 +109,28 @@ public class BookController {
         return "redirect:list";
     }
 
+    // Edit function
+    @GetMapping("/edit/{id}")
+    public ModelAndView showEditForm(@PathVariable Long id){
+        Optional<Book> editedBook = bookService.findById(id);
+        if(editedBook != null) {
+            Book book = editedBook.get();
+            ModelAndView modelAndView = new ModelAndView("/book/edit");
+            modelAndView.addObject("selectedCategories",book.getCategories());
+            modelAndView.addObject("book", book);
+            return modelAndView;
 
+        }else {
+            ModelAndView modelAndView = new ModelAndView("/error.404");
+            return modelAndView;
+        }
+    }
+    @PostMapping("/edit")
+    public ModelAndView updateBook(@ModelAttribute("book") Book book){
+        bookService.save(book);
+        ModelAndView modelAndView = new ModelAndView("/book/edit");
+        modelAndView.addObject("book", book);
+        modelAndView.addObject("message", "Book updated successfully");
+        return modelAndView;
+    }
 }

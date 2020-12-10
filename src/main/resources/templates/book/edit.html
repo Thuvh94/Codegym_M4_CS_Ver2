@@ -2,47 +2,39 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create Book</title>
+    <title>Edit book</title>
+    <style>
+    </style>
 </head>
 <body>
-<h1>Create book</h1>
+<h1>Edit Book</h1>
 <p>
     <a href="/book/list">Book list</a>
 </p>
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
-<form th:action="@{/book/create}" th:object="${book}" method="post">
+<form th:action="@{/book/edit}" th:object="${book}" method="post">
+    <input th:type="hidden" name="id" th:field="*{bookId}">
     <table>
         <tr>
             <td>Title:</td>
             <td><input type="text" th:field="*{title}"/></td>
-            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</td>
         </tr>
-
-        <tr>
-            <td>Cover image:</td>
-            <td><input type="file" th:field="*{coverImg}"></td>
-
-        </tr>
-
         <tr>
             <td>Description:</td>
-            <td><textarea th:field="*{description}" rows="4" cols="30"/></td>
+            <td><input type="text" th:field="*{description}"/></td>
         </tr>
-
         <tr>
-            <td>Publication Date:</td>
+            <td>Publication date:</td>
             <td><input type="number" th:field="*{publishedDate}"/></td>
         </tr>
-
         <tr>
             <td>Pages:</td>
             <td><input type="number" th:field="*{pages}"/></td>
         </tr>
-
         <tr>
-            <td>Genre:</td>
+            <td>Categories:</td>
             <td>
                 <div th:each="category : ${allCategories}">
                     <input type="checkbox" name="category"
@@ -51,20 +43,23 @@
                     <span th:text="${category.categoryName}"></span>
                 </div>
             </td>
-        </tr>
 
+        </tr>
         <tr>
-            <td>Authors:</td>
+            <td>Author:</td>
             <td>
-                <select th:field="*{authorId}">
-                    <option th:each="author : ${allAuthors}" th:value="${author.authorId}" th:text="${author.authorName}"></option>
+                <select name="authors" th:field="*{authorId}">
+                    <option th:each="author : ${allAuthors}"
+                            th:value="${author.authorId}"
+                            th:text="${author.authorName}"
+                            th:selected="(${author.authorId} == *{authorId.authorId})">
+                    </option>
                 </select>
             </td>
         </tr>
-
         <tr>
             <td></td>
-            <td><input type="submit" value="Create book"></td>
+            <td><input type="submit" value="Update book"></td>
         </tr>
     </table>
 </form>
