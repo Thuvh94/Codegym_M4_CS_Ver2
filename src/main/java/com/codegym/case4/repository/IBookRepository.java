@@ -14,9 +14,15 @@ import javax.transaction.Transactional;
 @Repository
 public interface IBookRepository extends PagingAndSortingRepository<Book,Long> {
     Page<Book> findAllByIsDeletedFalse(Pageable pageable);
-    Page<Book> findAllByTitleContainingAndDeletedIsFalse(String title, Pageable pageable);
+
+
+    @Query (value="select * from books b where b.title LIKE concat('%',:title,'%') and b.isDeleted = 0",nativeQuery = true)
+    Page<Book> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE books b set isDeleted =1 where b.bookId = :id", nativeQuery = true)
     void remove(@Param("id") Long id);
+
+
 }

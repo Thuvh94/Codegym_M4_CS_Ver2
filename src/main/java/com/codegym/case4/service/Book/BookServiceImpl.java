@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,6 +39,6 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public Page<Book> findAllByTitleContainingAndDeletedIsFalse(String title, Pageable pageable) {
-        return bookRepository.findAllByTitleContainingAndDeletedIsFalse(title, pageable);
+        return bookRepository.findAllByTitleContaining(title,pageable);
     }
 }
