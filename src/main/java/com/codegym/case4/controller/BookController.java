@@ -66,16 +66,16 @@ public class BookController {
 
     // Create book
     @GetMapping("/create")
-    public ModelAndView showCreateForm(){
+    public ModelAndView showCreateForm() {
         ModelAndView modelAndView = new ModelAndView("/book/create");
         modelAndView.addObject("book", new BookForm());
         return modelAndView;
     }
 
     @PostMapping("/create")
-    public RedirectView saveBook(@ModelAttribute BookForm bookForm){
-        Book book = new Book(bookForm.getBookId(),bookForm.getTitle(),bookForm.getDescription(),bookForm.isDeleted(),
-                bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(),bookForm.getAuthorId());
+    public RedirectView saveBook(@ModelAttribute BookForm bookForm) {
+        Book book = new Book(bookForm.getBookId(), bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
+                bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(), bookForm.getAuthorId());
         MultipartFile multipartFile = bookForm.getCoverImg();
         String fileName = multipartFile.getOriginalFilename();
         try {
@@ -90,75 +90,37 @@ public class BookController {
 
     // Delete function
     @GetMapping("/delete/{id}")
-    public ModelAndView showDeleteForm(@PathVariable Long id){
+    public ModelAndView showDeleteForm(@PathVariable Long id) {
         Optional<Book> deletedBook = bookService.findById(id);
-        if(deletedBook!=null){
+        if (deletedBook != null) {
             Book book = deletedBook.get();
             ModelAndView modelAndView = new ModelAndView("/book/delete");
-            modelAndView.addObject("book",book);
+            modelAndView.addObject("book", book);
             return modelAndView;
-        }
-        else {
+        } else {
             ModelAndView modelAndView = new ModelAndView("/error.404");
             return modelAndView;
         }
     }
 
     @PostMapping("/delete")
-    public String deleteBook(@ModelAttribute("book") Book book){
+    public String deleteBook(@ModelAttribute("book") Book book) {
         bookService.remove(book.getBookId());
         return "redirect:list";
     }
 
-    // Edit function
-//    @GetMapping("/edit/{id}")
-//    public ModelAndView showEditForm(@PathVariable Long id){
-//        Optional<Book> editedBook = bookService.findById(id);
-//        if(editedBook != null) {
-//            Book book = editedBook.get();
-//            BookForm bookForm = new BookForm(book.getBookId(),book.getTitle(),book.getDescription(),book.isDeleted(),
-//                            book.getPublishedDate(),book.getPages(),book.getCategories(),book.getAuthorId());
-//            ModelAndView modelAndView = new ModelAndView("/book/edit");
-//            modelAndView.addObject("selectedCategories",book.getCategories());
-//            modelAndView.addObject("coverImgLink",book.getCoverImg());
-//            modelAndView.addObject("book", bookForm);
-//            return modelAndView;
-//
-//        }else {
-//            ModelAndView modelAndView = new ModelAndView("/error.404");
-//            return modelAndView;
-//        }
-//    }
-//    @PostMapping("/edit")
-//    public ModelAndView updateBook(@ModelAttribute("book") BookForm bookForm){
-//        Book editedBook = new Book(bookForm.getBookId(),bookForm.getTitle(),bookForm.getDescription(),bookForm.isDeleted(),
-//                bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(),bookForm.getAuthorId());
-//        MultipartFile multipartFile = bookForm.getCoverImg();
-//        String fileName = multipartFile.getOriginalFilename();
-//        try {
-//            FileCopyUtils.copy(bookForm.getCoverImg().getBytes(), new File(this.fileUpload + fileName));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        editedBook.setCoverImg(fileName);
-//        System.out.println(editedBook);
-//        bookService.save(editedBook);
-//        ModelAndView modelAndView = new ModelAndView("/book/edit");
-//        modelAndView.addObject("coverImgLink",fileName);
-//        modelAndView.addObject("message", "Book updated successfully");
-//        modelAndView.addObject("book", bookForm);
-//        return modelAndView;
-//    }
-    // Edit function
+//     Edit function
     @GetMapping("/edit/{id}")
     public ModelAndView showEditForm(@PathVariable Long id){
         Optional<Book> editedBook = bookService.findById(id);
         if(editedBook != null) {
             Book book = editedBook.get();
+            BookForm bookForm = new BookForm(book.getBookId(),null,book.getTitle(),book.getDescription(),book.isDeleted(),
+                            book.getPublishedDate(),book.getPages(),book.getCategories(),book.getAuthorId());
             ModelAndView modelAndView = new ModelAndView("/book/edit");
             modelAndView.addObject("selectedCategories",book.getCategories());
             modelAndView.addObject("coverImgLink",book.getCoverImg());
-            modelAndView.addObject("book", book);
+            modelAndView.addObject("book", bookForm);
             return modelAndView;
 
         }else {
@@ -167,12 +129,22 @@ public class BookController {
         }
     }
     @PostMapping("/edit")
-    public ModelAndView updateBook(@ModelAttribute("book") Book book){
-        bookService.save(book);
+    public ModelAndView updateBook(@ModelAttribute("book") BookForm bookForm){
+        MultipartFile multipartFile = bookForm.getCoverImg();
+        String fileName = multipartFile.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(bookForm.getCoverImg().getBytes(), new File(this.fileUpload + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Book editedBook = new Book(bookForm.getBookId(),bookForm.getTitle(),bookForm.getDescription(),bookForm.isDeleted(),
+                bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(),bookForm.getAuthorId());
+        editedBook.setCoverImg(fileName);
+        bookService.save(editedBook);
         ModelAndView modelAndView = new ModelAndView("/book/edit");
-        modelAndView.addObject("book", book);
-        modelAndView.addObject("coverImgLink",book.getCoverImg());
+        modelAndView.addObject("coverImgLink",fileName);
         modelAndView.addObject("message", "Book updated successfully");
+        modelAndView.addObject("book", bookForm);
         return modelAndView;
     }
 }
