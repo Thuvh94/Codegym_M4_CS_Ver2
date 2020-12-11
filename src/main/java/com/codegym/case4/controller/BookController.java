@@ -132,14 +132,21 @@ public class BookController {
     public ModelAndView updateBook(@ModelAttribute("book") BookForm bookForm){
         MultipartFile multipartFile = bookForm.getCoverImg();
         String fileName = multipartFile.getOriginalFilename();
-        try {
-            FileCopyUtils.copy(bookForm.getCoverImg().getBytes(), new File(this.fileUpload + fileName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Book editedBook = new Book(bookForm.getBookId(),bookForm.getTitle(),bookForm.getDescription(),bookForm.isDeleted(),
+        Book editedBook = new Book(bookForm.getBookId(),fileName,bookForm.getTitle(),bookForm.getDescription(),bookForm.isDeleted(),
                 bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(),bookForm.getAuthorId());
-        editedBook.setCoverImg(fileName);
+        if(fileName.equals("")){
+            Book book1 = bookService.findById(bookForm.getBookId()).get();
+            fileName = book1.getCoverImg();
+            editedBook.setCoverImg(fileName);
+        }
+        else {
+            try {
+                FileCopyUtils.copy(bookForm.getCoverImg().getBytes(), new File(this.fileUpload + fileName));
+                editedBook.setCoverImg(fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         bookService.save(editedBook);
         ModelAndView modelAndView = new ModelAndView("/book/edit");
         modelAndView.addObject("coverImgLink",fileName);
