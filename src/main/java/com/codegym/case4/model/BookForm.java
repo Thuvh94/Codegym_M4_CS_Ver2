@@ -35,6 +35,17 @@ public class BookForm {
         this.authorId = authorId;
     }
 
+    public BookForm(Long bookId, String title, String description, boolean isDeleted, long publishedDate, int pages, Set<Category> categories, Author authorId) {
+        this.bookId = bookId;
+        this.title = title;
+        this.description = description;
+        this.isDeleted = isDeleted;
+        this.publishedDate = publishedDate;
+        this.pages = pages;
+        this.categories = categories;
+        this.authorId = authorId;
+    }
+
     public Long getBookId() {
         return bookId;
     }

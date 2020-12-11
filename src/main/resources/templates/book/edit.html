@@ -22,6 +22,14 @@
             <td><input type="text" th:field="*{title}"/></td>
         </tr>
         <tr>
+            <td>Cover image:</td>
+            <td><img th:src="@{'http://localhost:8080/' + ${coverImgLink}}" style="height: 150px;width: 150px"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="file" th:field="*{coverImg}"></td>
+        </tr>
+        <tr>
             <td>Description:</td>
             <td><input type="text" th:field="*{description}"/></td>
         </tr>
