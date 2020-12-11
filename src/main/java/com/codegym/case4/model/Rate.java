@@ -1,11 +1,12 @@
-package com.codegym.case4.model;
+package model;
 
-import lombok.Data;
+import com.codegym.case4.model.Book;
+import com.codegym.case4.model.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-@Data
+
 @Entity
 @Table(name = "Rates")
 public class Rate {
@@ -32,4 +33,35 @@ public class Rate {
         this.rate = rate;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Book getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(Book bookId) {
+        this.bookId = bookId;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
+    public int getRate() {
+        return rate;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
 }

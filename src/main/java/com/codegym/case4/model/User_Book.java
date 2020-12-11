@@ -1,10 +1,10 @@
-package com.codegym.case4.model;
+package model;
 
-import lombok.Data;
+import com.codegym.case4.model.Book;
+import com.codegym.case4.model.User;
 
 import javax.persistence.*;
 
-@Data
 @Entity
 @Table(name="User_book")
 public class User_Book {
@@ -27,6 +27,38 @@ public class User_Book {
         this.id = id;
         this.bookId = bookId;
         this.userId = userId;
+        this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Book getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(Book bookId) {
+        this.bookId = bookId;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
         this.status = status;
     }
 

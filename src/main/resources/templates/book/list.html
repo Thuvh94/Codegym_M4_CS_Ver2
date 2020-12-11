@@ -31,7 +31,7 @@
             <td th:text="${book.bookId}"></td>
             <td th:text="${book.title}"></td>
             <td>
-                <img th:src="${book.coverImg}">
+                <img th:src="@{'' + ${book.coverImg}}" style="height: 150px;width: 150px">
             </td>
             <td th:text="${book.description}"></td>
             <td th:text="${book.publishedDate}"></td>

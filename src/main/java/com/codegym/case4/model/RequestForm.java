@@ -1,6 +1,10 @@
 package com.codegym.case4.model;
 
+import com.codegym.case4.model.User;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 public class RequestForm {
     private Long requestId;

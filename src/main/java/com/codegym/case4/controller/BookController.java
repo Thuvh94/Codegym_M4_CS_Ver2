@@ -2,20 +2,27 @@ package com.codegym.case4.controller;
 
 import com.codegym.case4.model.Author;
 import com.codegym.case4.model.Book;
+import com.codegym.case4.model.BookForm;
 import com.codegym.case4.model.Category;
 import com.codegym.case4.service.Author.IAuthorService;
 import com.codegym.case4.service.Book.IBookService;
 import com.codegym.case4.service.Category.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -30,6 +37,9 @@ public class BookController {
     @Autowired
     private IAuthorService authorService;
 
+    @Value("${upload.path}")
+    private String fileUpload;
+
     @ModelAttribute("allCategories")
     public Iterable<Category> getAllCategories() {
         return categoryService.findAll();
@@ -40,7 +50,7 @@ public class BookController {
         return authorService.findAll(pageable);
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ModelAndView listBooks(@RequestParam("s") Optional<String> s, @PageableDefault(size = 10) Pageable pageable) {
         Page<Book> books;
         if (s.isPresent()) {
@@ -57,21 +67,36 @@ public class BookController {
     @GetMapping("/create")
     public ModelAndView showCreateForm(){
         ModelAndView modelAndView = new ModelAndView("/book/create");
-        modelAndView.addObject("book", new Book());
+        modelAndView.addObject("book", new BookForm());
         return modelAndView;
     }
 
+//    @PostMapping("/create")
+//    public ModelAndView saveBook(@Validated @ModelAttribute("book") Book book, BindingResult bindingResult){
+//        if(bindingResult.hasFieldErrors()){
+//            ModelAndView modelAndView = new ModelAndView("/book/create");
+//            return modelAndView;
+//        }
+//        bookService.save(book);
+//        ModelAndView modelAndView = new ModelAndView("/book/create");
+//        modelAndView.addObject("book", new Book());
+//        modelAndView.addObject("message", "New book is created successfully");
+//        return modelAndView;
     @PostMapping("/create")
-    public ModelAndView saveCustomer(@Validated @ModelAttribute("book") Book book, BindingResult bindingResult){
-        if(bindingResult.hasFieldErrors()){
-            ModelAndView modelAndView = new ModelAndView("/book/create");
-            return modelAndView;
+    public RedirectView saveBook(@ModelAttribute BookForm bookForm){
+        Book book = new Book(bookForm.getBookId(),bookForm.getTitle(),bookForm.getDescription(),bookForm.isDeleted(),
+                bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(),bookForm.getAuthorId());
+        MultipartFile multipartFile = bookForm.getCoverImg();
+        String fileName = multipartFile.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(bookForm.getCoverImg().getBytes(), new File(this.fileUpload + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        book.setCoverImg(fileName);
         bookService.save(book);
-        ModelAndView modelAndView = new ModelAndView("/book/create");
-        modelAndView.addObject("book", new Book());
-        modelAndView.addObject("message", "New book is created successfully");
-        return modelAndView;
+        return new RedirectView("/book");
+    }
 //        Product product1 = new Product.ProductBuilder(product.getName())
 //                .description(product.getDescription()).build();
 //        MultipartFile multipartFile = product.getImage();
@@ -85,7 +110,7 @@ public class BookController {
 //        productService.save(product1);
 //        return new RedirectView("");
 //    }
-    }
+//    }
 
     // Delete function
     @GetMapping("/delete/{id}")
