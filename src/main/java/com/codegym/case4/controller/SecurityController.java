@@ -28,14 +28,19 @@ public class SecurityController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @RequestMapping("/user")
+    @RequestMapping("/")
+    public String homePage() {
+        return "welcomePage"; //Sẽ tạo giao diện client home để thay vào.
+    }
+
+    @RequestMapping("/client")
     public String userInfo() {
         return "userInfoPage";
     }
 
     @RequestMapping("/admin")
     public String adminPage() {
-        return "adminPage";
+        return "redirect:/admin/book";
 
     }
     @GetMapping("/create")
@@ -66,18 +71,9 @@ public class SecurityController {
         return "loginPage";
     }
 
-
-    @RequestMapping("/")
-    public String homePage() {
-        return "welcomePage";
-    }
-
     @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
     public String logoutSuccessfulPage(Model model) {
         model.addAttribute("title", "Logout");
         return "welcomePage";
     }
-
-
-
 }
