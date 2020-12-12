@@ -10,14 +10,14 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h1>Delete User</h1>
-<h2>Are you sure?</h2>
-<p>
+<h1 align="center">Delete User</h1>
+<h2 align="center">Are you sure?</h2>
+<div align="center">
     <a href="/admin/user">User list</a>
-</p>
+</div>
 <form th:action="@{/admin/user/delete}" th:object="${user}" method="post">
     <input th:type="hidden" name="userId" th:field="*{userId}">
-    <table>
+    <table align="center">
         <tr>
             <td>Name:</td>
             <td><input type="text" th:field="*{name}"/></td>

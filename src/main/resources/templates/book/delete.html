@@ -10,14 +10,14 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h1>Delete book</h1>
-<h2>Are you sure?</h2>
-<p>
+<h1 align="center">Delete book</h1>
+<h2 align="center">Are you sure?</h2>
+<div align="center">
     <a href="/admin/book">Book list</a>
-</p>
+</div>
 <form th:action="@{/admin/book/delete}" th:object="${book}" method="post">
     <input th:type="hidden" name="id" th:field="*{bookId}">
-    <table>
+    <table align="center">
         <tr>
             <td>Title:</td>
             <td th:text="${book.title}"></td>

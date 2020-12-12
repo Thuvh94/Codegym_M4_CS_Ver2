@@ -17,15 +17,15 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h1>Create User</h1>
-<p>
+<h1 align="center">Create User</h1>
+<div align="center">
     <a href="/admin/user">User list</a>
-</p>
+</div>
 <th:block th:if="${message}">
-    <p th:text="${message}"></p>
+    <p th:text="${message}" align="center"></p>
 </th:block>
 <form th:action="@{/admin/user/create}" th:object="${user}" method="post">
-    <table>
+    <table align="center">
         <tr>
             <td>Name:</td>
             <td><input type="text" th:field="*{name}"/></td>

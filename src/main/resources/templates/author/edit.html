@@ -17,10 +17,13 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h1>Edit author</h1>
-<a th:href="@{/admin/author}">List author</a>
+<h1 align="center">Edit author</h1>
+<div align="center">
+    <a th:href="@{/admin/author}">List author</a>
+</div>
+
 <th:block th:if="${message}">
-    <p th:text="${message}"></p>
+    <p th:text="${message}" align="center"></p>
 </th:block>
 <form th:action="@{/admin/author/edit}" th:object="${author}" method="post">
     <table align="center">

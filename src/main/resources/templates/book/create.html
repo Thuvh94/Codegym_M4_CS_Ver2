@@ -10,15 +10,15 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h1>Create book</h1>
-<p>
+<h1 align="center">Create book</h1>
+<div align="center">
     <a href="/admin/book">Book list</a>
-</p>
+</div>
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
 <form th:action="@{/admin/book/create}" th:object="${book}" method="post" enctype="multipart/form-data">
-    <table>
+    <table align="center">
         <tr>
             <td>Title:</td>
             <td><input type="text" th:field="*{title}"/></td>

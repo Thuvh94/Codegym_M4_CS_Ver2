@@ -17,11 +17,14 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h1>Create category</h1>
-<a th:href="@{/admin/category}">List Category</a>
+<h1 align="center">Create category</h1>
+<div align="center">
+    <a th:href="@{/admin/category}">List Category</a>
+</div>
 
-<th:block th:if="${message}">
-    <p th:text="${message}"></p>
+
+<th:block th:if="${message}" >
+    <p th:text="${message}" align="center"></p>
 </th:block>
 
 <form th:action="@{/admin/category/create}" th:object="${category}" method="post">

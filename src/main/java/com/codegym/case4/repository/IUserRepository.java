@@ -24,6 +24,5 @@ public interface IUserRepository extends PagingAndSortingRepository<User, Long> 
     @Query(value = "UPDATE users u set isDeleted =1 where u.userId = :id", nativeQuery = true)
     void remove(@Param("id") Long id);
 
-//    Page<User> findAllByNameContainingAndDeletedIsFalse(String name, Pageable pageable);
-//    Page<User> findAllByNameContaining(String name, Pageable pageable);
+    User findByUserName(String userName);
 }

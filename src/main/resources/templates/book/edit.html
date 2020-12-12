@@ -8,18 +8,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </head>
-<body align="center">
+<body >
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h1>Edit Book</h1>
-<p>
+<h1 align="center">Edit Book</h1>
+<div align="center">
     <a href="/admin/book">Book list</a>
-</p>
+</div>
 <th:block th:if="${message}">
-    <p th:text="${message}"></p>
+    <p th:text="${message}" align="center"></p>
 </th:block>
 <form th:action="@{/admin/book/edit}" th:object="${book}" method="post" enctype="multipart/form-data">
     <input th:type="hidden" name="id" th:field="*{bookId}">
-    <table>
+    <table align="center">
         <tr>
             <td>Title:</td>
             <td><input type="text" th:field="*{title}"/></td>

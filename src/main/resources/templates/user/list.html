@@ -11,12 +11,14 @@
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
 <h1 align="center">Users</h1>
-<div align="center"><form >Search a User:
+<div align="center">
+    <form >Search a User:
     <input name="s" type="text"/>
     <input type="submit" value="Search"/>
-</form><br/></div>
+</form>
+</div>
 
-<div align="center"><a href="/admin/user/create" style="float: right">Create new User</a></div>
+<div align="center"><a href="/admin/user/create">Create new User</a></div>
 <table border="1" align="center">
     <tr>
         <th>ID</th>
