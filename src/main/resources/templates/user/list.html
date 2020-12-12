@@ -9,6 +9,7 @@
     <title>Title</title>
 </head>
 <body>
+<div th:replace="adminLayout :: adminNavbar"></div>
 <a href="/user/create">Create new User</a>
 <h1>Customers</h1>
 <form >
@@ -53,5 +54,6 @@
         <a th:href="@{'/users'(page=${users.number + 1})}" th:if="${users.hasNext()}">Next</a>
     </div>
 </table>
+<div th:replace="adminLayout :: adminFooter"></div>
 </body>
 </html>
