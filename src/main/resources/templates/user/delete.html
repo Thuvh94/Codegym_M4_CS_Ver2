@@ -13,7 +13,7 @@
 <h1>Delete User</h1>
 <h2>Are you sure?</h2>
 <p>
-    <a href="/user">User list</a>
+    <a href="admin/user">User list</a>
 </p>
 <form th:action="@{/user/delete}" th:object="${user}" method="post">
     <input th:type="hidden" name="userId" th:field="*{userId}">

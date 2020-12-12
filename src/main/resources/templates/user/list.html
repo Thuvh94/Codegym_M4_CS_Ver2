@@ -10,7 +10,7 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<a href="/user/create">Create new User</a>
+<a href="user/create">Create new User</a>
 <h1>Customers</h1>
 <form >
     Search a User:
@@ -44,14 +44,14 @@
                 <span th:text="${role.roleName}"></span><br>
                 </span>
             </td>
-            <td><a th:href="@{/user/edit/__${user.userId}__ }">Edit</a></td>
-            <td><a th:href="@{/user/delete/__${user.userId}__ }">Delete</a></td>
+            <td><a th:href="@{user/edit/__${user.userId}__ }">Edit</a></td>
+            <td><a th:href="@{user/delete/__${user.userId}__ }">Delete</a></td>
         </tr>
     </th:block>
     <div>
-        <a th:href="@{'/users'(page=${users.number - 1})}" th:if="${users.hasPrevious()}">Previous</a>
+        <a th:href="@{'/user'(page=${users.number - 1})}" th:if="${users.hasPrevious()}">Previous</a>
         <span th:text="${users.number + 1}"></span>/<span th:text="${users.totalPages}"></span>
-        <a th:href="@{'/users'(page=${users.number + 1})}" th:if="${users.hasNext()}">Next</a>
+        <a th:href="@{'/user'(page=${users.number + 1})}" th:if="${users.hasNext()}">Next</a>
     </div>
 </table>
 <div th:replace="adminLayout :: adminFooter"></div>

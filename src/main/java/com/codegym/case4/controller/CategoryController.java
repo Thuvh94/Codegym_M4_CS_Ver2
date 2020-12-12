@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "/category")
+@RequestMapping(value = "/admin/category")
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;

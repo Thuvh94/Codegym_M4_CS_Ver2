@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/author")
+@RequestMapping("/admin/author")
 public class AuthorController {
     @Autowired
     private IAuthorService iAuthorService;
@@ -41,21 +41,6 @@ public class AuthorController {
         modelAndView.addObject("message", "new author created successfully");
         return modelAndView;
     }
-
-//    @GetMapping("/view-author/{id}")
-//    public ModelAndView viewAuthor(@PathVariable("id") Long id) {
-//        Optional<Author> author = iAuthorService.findById(id);
-//        if (author == null) {
-//            return new ModelAndView("author/list");
-//        }
-//
-//        Iterable<Book> book = myBookService.findAllByAuthor(author.get());
-//
-//        ModelAndView modelAndView = new ModelAndView("/author/view");
-//        modelAndView.addObject("author", author);
-//        modelAndView.addObject("books", book);
-//        return modelAndView;
-//    }
 
     @GetMapping("/{id}/edit")
     public ModelAndView editAuthor(@PathVariable Long id) {

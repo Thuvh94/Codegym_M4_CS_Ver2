@@ -13,7 +13,7 @@
 <h1>Delete book</h1>
 <h2>Are you sure?</h2>
 <p>
-    <a href="/book">Book list</a>
+    <a href="admin/book">Book list</a>
 </p>
 <form th:action="@{/book/delete}" th:object="${book}" method="post">
     <input th:type="hidden" name="id" th:field="*{bookId}">
