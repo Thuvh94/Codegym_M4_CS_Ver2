@@ -85,7 +85,7 @@ public class BookController {
         }
         book.setCoverImg(fileName);
         bookService.save(book);
-        return new RedirectView("/book");
+        return new RedirectView("/admin/book");
     }
 
     // Delete function
@@ -106,7 +106,7 @@ public class BookController {
     @PostMapping("/delete")
     public String deleteBook(@ModelAttribute("book") Book book) {
         bookService.remove(book.getBookId());
-        return "redirect:list";
+        return "redirect:/admin/book";
     }
 
 //     Edit function

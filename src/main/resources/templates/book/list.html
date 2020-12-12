@@ -17,7 +17,7 @@
     <input name="s" type="text"/>
     <input type="submit" value="Search"/>
 </form>
-<a href="book/create" style="float: right">Create new book</a>
+<a href="/admin/book/create" style="float: right">Create new book</a>
 <br/>
 <table border="1">
     <tr>
@@ -37,7 +37,7 @@
             <td th:text="${book.bookId}"></td>
             <td th:text="${book.title}"></td>
             <td>
-                <img th:src="@{'http://localhost:8080/' + ${book.coverImg}}" style="height: 150px;width: 150px">
+                <img th:src="@{'http://localhost:8080/' + ${book.coverImg}}" style="height: 200px;width: 150px">
             </td>
             <td th:text="${book.description}"></td>
             <td th:text="${book.publishedDate}"></td>

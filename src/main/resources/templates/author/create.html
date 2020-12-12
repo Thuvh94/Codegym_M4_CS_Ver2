@@ -16,19 +16,19 @@
             crossorigin="anonymous"></script>
 </head>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h3><a th:href="@{/author}">list author</a></h3>
+<h3><a th:href="@{/admin/author}">List author</a></h3>
 <body>
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
-<form th:action="@{/author/create}" th:object="${author}" method="post">
+<form th:action="@{/admin/author/create}" th:object="${author}" method="post">
     <table align="center">
         <tr>
-            <th>AuthorName</th>
+            <th>Author name</th>
             <td><input type="text" th:field="*{authorName}" size="20"></td>
         </tr>
         <tr>
-            <th>AuthorDesc</th>
+            <th>Author description</th>
             <td><textarea rows="4" cols="30" th:field="*{authorDesc}"></textarea></td>
         </tr>
         <tr>

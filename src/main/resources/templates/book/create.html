@@ -12,12 +12,12 @@
 <div th:replace="adminLayout :: adminNavbar"></div>
 <h1>Create book</h1>
 <p>
-    <a href="admin/book">Book list</a>
+    <a href="/admin/book">Book list</a>
 </p>
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
-<form th:action="@{/book/create}" th:object="${book}" method="post" enctype="multipart/form-data">
+<form th:action="@{/admin/book/create}" th:object="${book}" method="post" enctype="multipart/form-data">
     <table>
         <tr>
             <td>Title:</td>

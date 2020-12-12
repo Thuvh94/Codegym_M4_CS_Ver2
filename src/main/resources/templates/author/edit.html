@@ -17,11 +17,11 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h3><a th:href="@{/author}">list author</a></h3>
+<h3><a th:href="@{/admin/author}">List author</a></h3>
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
-<form th:action="@{/author/edit}" th:object="${author}" method="post">
+<form th:action="@{/admin/author/edit}" th:object="${author}" method="post">
     <table align="center">
         <tr>
             <td><input th:field="*{authorId}" hidden="hidden"/></td>

@@ -12,12 +12,12 @@
 <div th:replace="adminLayout :: adminNavbar"></div>
 <h1>Edit User</h1>
 <p>
-    <a href="admin/user">User list</a>
+    <a href="/admin/user">User list</a>
 </p>
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
-<form th:action="@{/user/edit}" th:object="${user}" method="post">
+<form th:action="@{/admin/user/edit}" th:object="${user}" method="post">
     <input th:type="hidden" name="id" th:field="*{userId}">
     <table>
         <tr>

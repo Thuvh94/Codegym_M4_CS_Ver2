@@ -92,7 +92,7 @@ public class UserController {
     @PostMapping("/delete")
     public String deleteUser(@ModelAttribute("user") User user){
         userService.remove(user.getUserId());
-        return "redirect:/user";
+        return "redirect:/admin/user";
     }
 
     // Edit function

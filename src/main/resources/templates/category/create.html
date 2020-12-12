@@ -16,12 +16,12 @@
     <title>create</title>
 </head>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h3><a th:href="@{/category}">list Category</a></h3>
+<h3><a th:href="@{/admin/category}">list Category</a></h3>
 <body>
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
-<form th:action="@{/category/create}" th:object="${category}" method="post">
+<form th:action="@{/admin/category/create}" th:object="${category}" method="post">
     <table align="center">
         <tr>
             <th>CategoryName</th>

@@ -10,11 +10,11 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h3><a th:href="@{/category}">list Category</a></h3>
+<h3><a th:href="@{/admin/category}">list Category</a></h3>
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
-<form th:action="@{/category/edit}" th:object="${category}" method="post">
+<form th:action="@{/admin/category/edit}" th:object="${category}" method="post">
     <table align="center">
         <tr>
             <td><input th:field="*{categoryId}" hidden="hidden"/></td>
