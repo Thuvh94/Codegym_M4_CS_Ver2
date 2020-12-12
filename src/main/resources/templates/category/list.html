@@ -10,25 +10,20 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h2>
-    <a th:href="@{/admin/category/create}">
-        add new category
-    </a>
-</h2>
-
-<table border="1">
+<h1 align="center">Category</h1>
+<div align="center"><a th:href="@{/admin/category/create}">Add new category</a></div>
+<table border="1" align="center">
     <tr>
         <th>CategoryId</th>
         <th>CategoryName</th>
-
+        <th>Edit</th>
+        <th>Delete</th>
     </tr>
     <tr th:each="category: ${categorys}">
         <td><a th:text="${category.getCategoryId()}"></a></td>
         <td><a th:text="${category.getCategoryName()}"></a></td>
-
         <td><a th:href="@{category/edit/{id}(id = ${category.categoryId})}">Edit</a></td>
         <td><a th:href="@{category/{id}/delete(id = ${category.categoryId})}">Delete</a></td>
-
     </tr>
 </table>
 <div th:replace="adminLayout :: adminFooter"></div>

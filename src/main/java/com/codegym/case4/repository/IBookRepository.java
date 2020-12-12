@@ -24,5 +24,4 @@ public interface IBookRepository extends PagingAndSortingRepository<Book,Long> {
     @Query(value = "UPDATE books b set isDeleted =1 where b.bookId = :id", nativeQuery = true)
     void remove(@Param("id") Long id);
 
-
 }

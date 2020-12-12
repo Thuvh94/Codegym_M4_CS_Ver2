@@ -15,9 +15,10 @@
             integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
             crossorigin="anonymous"></script>
 </head>
-<div th:replace="adminLayout :: adminNavbar"></div>
-<h3><a th:href="@{/admin/author}">List author</a></h3>
 <body>
+<div th:replace="adminLayout :: adminNavbar"></div>
+<h1>Create author</h1>
+<a th:href="@{/admin/author}">List author</a>
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>

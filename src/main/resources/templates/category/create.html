@@ -15,12 +15,15 @@
     <meta charset="UTF-8">
     <title>create</title>
 </head>
-<div th:replace="adminLayout :: adminNavbar"></div>
-<h3><a th:href="@{/admin/category}">list Category</a></h3>
 <body>
+<div th:replace="adminLayout :: adminNavbar"></div>
+<h1>Create category</h1>
+<a th:href="@{/admin/category}">List Category</a>
+
 <th:block th:if="${message}">
     <p th:text="${message}"></p>
 </th:block>
+
 <form th:action="@{/admin/category/create}" th:object="${category}" method="post">
     <table align="center">
         <tr>
@@ -32,8 +35,6 @@
         </tr>
     </table>
 </form>
-</body>
-</html>
 <div th:replace="adminLayout :: adminFooter"></div>
 </body>
 </html>

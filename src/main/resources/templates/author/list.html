@@ -17,17 +17,16 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h2>
-    <a th:href="@{/admin/author/create}">
-        add new author
-    </a>
-</h2>
+<h1 align="center">List author</h1>
+<a th:href="@{/admin/author/create}" align="center">Add new author</a>
 <!--<h3><a th:href="@{/author}">list author</a></h3>-->
-<table border="1">
+<table border="1" align="center">
     <tr>
-        <th>AuthorId</th>
-        <th>AuthorName</th>
-        <th>AuthorDesc</th>
+        <th>Author id</th>
+        <th>Author name</th>
+        <th>Author description</th>
+        <th>Edit</th>
+        <th>Delete</th>
     </tr>
     <tr th:each="author: ${authors}">
         <td><a th:text="${author.getAuthorId()}" th:href="@{/view-author/__${author.getAuthorId()}__}"></a></td>
