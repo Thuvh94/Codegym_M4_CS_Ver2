@@ -1,10 +1,13 @@
 package com.codegym.case4.service.User;
 
 import com.codegym.case4.model.User;
+import com.codegym.case4.model.UserPrinciple;
 import com.codegym.case4.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -36,5 +39,19 @@ public class UserServiceImpl implements IUserService{
     @Override
     public Page<User> findAllByNameContaining(String name, Pageable pageable) {
         return userRepository.findAllByNameContaining(name,pageable);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUserName(username);
+        if(user == null){
+            throw new UsernameNotFoundException(username);
+        }
+        return UserPrinciple.build(user);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUserName(username);
     }
 }

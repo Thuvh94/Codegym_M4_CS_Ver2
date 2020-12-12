@@ -12,4 +12,6 @@ public interface IRoleService {
     Optional<Role> findById(Long id);
 
     void remove(Long id);
+
+    Role findRoleByRoleName(String roleName);
 }

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="container">
+</div>
+
+<form th:action="@{/create}" method="post" th:object="${user}">
+    <h2>Message : <span th:utext="${message}"></span></h2>
+    <table>
+        <tbody>
+        <tr>
+            <td>Name</td>
+            <td><input th:field="*{name}" /></td>
+            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
+        </tr>
+        <tr>
+            <td>Age</td>
+            <td><input th:field="*{age}" /></td>
+            <td th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Name Error</td>
+        </tr>
+        <tr>
+            <td>Mail</td>
+            <td><input th:field="*{mail}" /></td>
+            <td th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}">Name Error</td>
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td><input th:field="*{phone}" /></td>
+            <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Name Error</td>
+        </tr>
+        <tr>
+            <td>UserName</td>
+            <td><input th:field="*{userName}" /></td>
+            <td th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Name Error</td>
+        </tr>
+        <tr>
+            <td>PassWord:</td>
+            <td><input type="password" th:field="*{password}" /></td>
+            <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</td>
+        </tr>
+        <!--            <tr th:if="${user.roles.size() >= 2}">-->
+        <!--                <td>chức năng:</td>-->
+        <!--                <td><input type="password" th:field="*{roles}" /></td>-->
+        <!--                <td th:if="${#fields.hasErrors('passWord')}" th:errors="*{passWord}">Name Error</td>-->
+        <!--            </tr>-->
+        <tr>
+            <td><input type="submit" value="create" /></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<a th:href="@{/login}">Đăng nhập</a>
+</div>
+</body>
+</html>
