@@ -34,12 +34,12 @@
             <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Name Error</td>
         </tr>
         <tr>
-            <td>UserName</td>
+            <td>Username</td>
             <td><input th:field="*{userName}" /></td>
             <td th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Name Error</td>
         </tr>
         <tr>
-            <td>PassWord:</td>
+            <td>Password:</td>
             <td><input type="password" th:field="*{password}" /></td>
             <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Name Error</td>
         </tr>
@@ -49,7 +49,7 @@
         <!--                <td th:if="${#fields.hasErrors('passWord')}" th:errors="*{passWord}">Name Error</td>-->
         <!--            </tr>-->
         <tr>
-            <td><input type="submit" value="create" /></td>
+            <td><input type="submit" value="Sign up" /></td>
             <td></td>
         </tr>
         </tbody>

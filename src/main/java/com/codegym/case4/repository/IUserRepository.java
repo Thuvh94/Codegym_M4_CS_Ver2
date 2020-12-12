@@ -4,6 +4,7 @@ import com.codegym.case4.model.Book;
 import com.codegym.case4.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 
 @Repository
-public interface IUserRepository extends PagingAndSortingRepository<User, Long> {
+public interface IUserRepository extends JpaRepository<User, Long> {
     Page<User> findAllByIsDeletedFalse(Pageable pageable);
 
     @Query(value="select * from users u where u.name LIKE concat('%',:name,'%') and u.isDeleted = 0",nativeQuery = true)
@@ -25,4 +26,5 @@ public interface IUserRepository extends PagingAndSortingRepository<User, Long> 
     void remove(@Param("id") Long id);
 
     User findByUserName(String userName);
+    User findByUserNameAndIsDeletedIsFalse(String userName);
 }

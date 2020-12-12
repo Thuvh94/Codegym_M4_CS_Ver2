@@ -43,7 +43,7 @@ public class UserServiceImpl implements IUserService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUserName(username);
+        User user = userRepository.findByUserNameAndIsDeletedIsFalse(username);
         if(user == null){
             throw new UsernameNotFoundException(username);
         }
@@ -53,5 +53,10 @@ public class UserServiceImpl implements IUserService{
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUserName(username);
+    }
+
+    @Override
+    public User findByUserNameAndIsDeletedIsFalse(String userName) {
+        return userRepository.findByUserNameAndIsDeletedIsFalse(userName);
     }
 }

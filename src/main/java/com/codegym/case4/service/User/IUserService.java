@@ -9,4 +9,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface IUserService extends IGeneralService<User>, UserDetailsService {
     Page<User> findAllByNameContaining(String name, Pageable pageable);
     User findByUsername(String username);
+    User findByUserNameAndIsDeletedIsFalse(String userName);
 }
