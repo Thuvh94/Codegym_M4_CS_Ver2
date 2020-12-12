@@ -1,7 +1,7 @@
 package com.codegym.case4.service.User;
 
 import com.codegym.case4.model.User;
-import com.codegym.case4.model.UserPrinciple;
+import com.codegym.case4.model.UserPrincipal;
 import com.codegym.case4.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements IUserService{
         if(user == null){
             throw new UsernameNotFoundException(username);
         }
-        return UserPrinciple.build(user);
+        return UserPrincipal.build(user);
     }
 
     @Override

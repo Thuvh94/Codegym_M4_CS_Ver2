@@ -8,25 +8,25 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class UserPrinciple implements UserDetails {
+public class UserPrincipal implements UserDetails {
     private Long id;
     private String username;
     private String password;
     private Collection<? extends GrantedAuthority> roles;
 
-    public UserPrinciple(Long id, String username, String password, Collection<? extends GrantedAuthority> roles) {
+    public UserPrincipal(Long id, String username, String password, Collection<? extends GrantedAuthority> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.roles = roles;
     }
 
-    public static UserPrinciple build(User user){
+    public static UserPrincipal build(User user){
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role: user.getRoles()){
             authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         }
-        return new UserPrinciple(user.getUserId(), user.getUserName(), user.getPassword(), authorities);
+        return new UserPrincipal(user.getUserId(), user.getUserName(), user.getPassword(), authorities);
     }
 
     @Override
