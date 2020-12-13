@@ -23,6 +23,6 @@ public interface IRequestRepository extends PagingAndSortingRepository<Request,L
     @Query (value="select * from requests r where r.requestStatus = 3",nativeQuery = true)
     Page<Request> findAllByRequestStatusIs3(Pageable pageable);
 
-    @Query (value="select * from requests r where r.userId =:id order by r.createdAt Desc",nativeQuery = true)
+    @Query (value="select * from requests r where r.userId =:id order by r.requestId Desc",nativeQuery = true)
     Page<Request> findEachUserRequest(@Param("id") Long id, Pageable pageable);
 }

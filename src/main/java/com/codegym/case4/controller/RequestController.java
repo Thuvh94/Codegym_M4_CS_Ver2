@@ -1,6 +1,8 @@
 package com.codegym.case4.controller;
 
 import com.codegym.case4.model.*;
+import com.codegym.case4.service.Author.IAuthorService;
+import com.codegym.case4.service.Book.IBookService;
 import com.codegym.case4.service.Category.ICategoryService;
 import com.codegym.case4.service.Request.IRequestService;
 import com.codegym.case4.service.User.IUserService;
@@ -12,10 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -25,14 +24,19 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 @Controller
-@RequestMapping("/client/request")
 public class RequestController {
 
     @Autowired
     IUserService userService;
 
     @Autowired
+    IBookService bookService;
+
+    @Autowired
     ICategoryService categoryService;
+
+    @Autowired
+    IAuthorService authorService;
 
     @Autowired
     IRequestService requestService;
@@ -45,8 +49,13 @@ public class RequestController {
         return categoryService.findAll();
     }
 
-    @GetMapping("/list")
-    public ModelAndView listRequest(@PageableDefault(size = 5) Pageable pageable) {
+    @ModelAttribute("allAuthors")
+    public Page<Author> getAllAuthors(Pageable pageable) {
+        return authorService.findAll(pageable);
+    }
+
+    @GetMapping("/client/request/list")
+    public ModelAndView listRequestEachClient(@PageableDefault(size = 5) Pageable pageable) {
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findByUsername(userPrincipal.getUsername());
         Page<Request> requests = requestService.findEachUserRequest(user.getUserId(), pageable);
@@ -55,7 +64,7 @@ public class RequestController {
         return modelAndView;
     }
 
-    @GetMapping("/create")
+    @GetMapping("/client/request/create")
     public ModelAndView showCreateForm() {
         RequestForm requestForm = new RequestForm();
         ModelAndView modelAndView = new ModelAndView("/request/create");
@@ -63,7 +72,7 @@ public class RequestController {
         return modelAndView;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/client/request/create")
     public RedirectView saveRequest(@ModelAttribute("requestForm") RequestForm requestForm) {
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findByUsername(userPrincipal.getUsername());
@@ -82,4 +91,92 @@ public class RequestController {
         requestService.save(request);
         return new RedirectView("/client/request/list");
     }
+
+    @GetMapping("/admin/request")
+    public ModelAndView listRequestAdmin(@PageableDefault(size = 5) Pageable pageable) {
+        Page<Request> requests = requestService.findAll(pageable);
+        ModelAndView modelAndView = new ModelAndView("/request/listAdmin");
+        modelAndView.addObject("requests", requests);
+        return modelAndView;
+    }
+
+    @GetMapping("/admin/request/new")
+    public ModelAndView listNewRequestAdmin(@PageableDefault(size = 5) Pageable pageable) {
+        Page<Request> requests = requestService.findAllByRequestStatusIs0(pageable);
+        ModelAndView modelAndView = new ModelAndView("/request/listAdmin");
+        modelAndView.addObject("requests", requests);
+        return modelAndView;
+    }
+
+//    @GetMapping("/admin/request/inprogress")
+//    public ModelAndView listProgressRequestAdmin(@PageableDefault(size = 5) Pageable pageable) {
+//        Page<Request> requests = requestService.findAllByRequestStatusIs1(pageable);
+//        ModelAndView modelAndView = new ModelAndView("/request/listAdmin");
+//        modelAndView.addObject("requests", requests);
+//        return modelAndView;
+//    }
+
+    @GetMapping("/admin/request/done")
+    public ModelAndView listDoneRequestAdmin(@PageableDefault(size = 5) Pageable pageable) {
+        Page<Request> requests = requestService.findAllByRequestStatusIs2(pageable);
+        ModelAndView modelAndView = new ModelAndView("/request/listAdmin");
+        modelAndView.addObject("requests", requests);
+        return modelAndView;
+    }
+
+    @GetMapping("/admin/request/reject")
+    public ModelAndView listRejectRequestAdmin(@PageableDefault(size = 5) Pageable pageable) {
+        Page<Request> requests = requestService.findAllByRequestStatusIs3(pageable);
+        ModelAndView modelAndView = new ModelAndView("/request/listAdmin");
+        modelAndView.addObject("requests", requests);
+        return modelAndView;
+    }
+
+    @GetMapping("/admin/request/addBook/{requestId}")
+    public ModelAndView showAddRequestForm(@PathVariable Long requestId) {
+        Request request = requestService.findById(requestId).get();
+        BookForm bookForm = new BookForm(null, null, request.getTitle(), request.getDescription(),
+                false, request.getPublishedDate(), request.getPages(), null, null);
+        ModelAndView modelAndView = new ModelAndView("/request/addRequest");
+        modelAndView.addObject("coverImgLink", request.getCoverImg());
+        modelAndView.addObject("request", bookForm);
+        modelAndView.addObject("requestCategory", request.getCategories());
+        modelAndView.addObject("requestAuthor", request.getAuthor());
+        modelAndView.addObject("requestId", requestId);
+        return modelAndView;
+    }
+
+    @PostMapping("/admin/request/addBook")
+    public RedirectView addRequest(@ModelAttribute("request") BookForm bookForm, @ModelAttribute("requestId") Long requestId) {
+        MultipartFile multipartFile = bookForm.getCoverImg();
+        String fileName = multipartFile.getOriginalFilename();
+        Book editedBook = new Book(null, fileName, bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
+                bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(), bookForm.getAuthorId());
+        if (fileName.equals("")) {
+            Request request = requestService.findById(requestId).get();
+            fileName = request.getCoverImg();
+            editedBook.setCoverImg(fileName);
+        } else {
+            try {
+                FileCopyUtils.copy(bookForm.getCoverImg().getBytes(), new File(this.fileUpload + fileName));
+                editedBook.setCoverImg(fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        bookService.save(editedBook);
+        Request request = requestService.findById(requestId).get();
+        request.setRequestStatus(2);
+        return new RedirectView("/admin/request/list");
+    }
+
+    @GetMapping("/admin/request/rejectBook/{requestId}")
+    public RedirectView rejectBook(@PathVariable Long requestId) {
+        Request request = requestService.findById(requestId).get();
+        System.out.println(request);
+        request.setRequestStatus(3);
+        requestService.save(request);
+        return new RedirectView("/admin/request");
+    }
+
 }

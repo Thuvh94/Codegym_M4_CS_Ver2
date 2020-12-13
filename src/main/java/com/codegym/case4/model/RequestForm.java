@@ -38,4 +38,17 @@ public class RequestForm {
         this.requestStatus = requestStatus;
         this.createdAt = LocalDate.now();
     }
+
+    public RequestForm(Long requestId, User userId, String title, MultipartFile coverImg, String description, long publishedDate, int pages, String categories, String author, int requestStatus) {
+        this.requestId = requestId;
+        this.userId = userId;
+        this.title = title;
+        this.coverImg = coverImg;
+        this.description = description;
+        this.publishedDate = publishedDate;
+        this.pages = pages;
+        this.categories = categories;
+        this.author = author;
+        this.requestStatus = requestStatus;
+    }
 }

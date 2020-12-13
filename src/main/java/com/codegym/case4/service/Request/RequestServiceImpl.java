@@ -26,7 +26,7 @@ public class RequestServiceImpl implements IRequestService{
 
     @Override
     public Optional<Request> findById(Long id) {
-        return Optional.empty();
+        return requestRepository.findById(id);
     }
 
     @Override

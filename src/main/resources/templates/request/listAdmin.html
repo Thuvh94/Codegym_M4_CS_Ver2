@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Request list</title>
+</head>
+<body>
+<h1 align="center">All requests from users</h1>
+<div style="display: inline-block;">
+    <form action="/admin/request/new">
+        <button type="submit">New requests</button>
+    </form>
+<!--    <form action="/admin/request/inprogress">-->
+<!--        <button type="submit">In progress requests</button>-->
+<!--    </form>-->
+    <form action="/admin/request/done">
+        <button type="submit">Added requests</button>
+    </form>
+
+    <form action="/admin/request/reject">
+        <button type="submit">Rejected requests</button>
+    </form>
+
+    <form action="/admin/request">
+        <button type="submit">All requests</button>
+    </form>
+</div>
+
+
+<table border="1" align="center">
+    <tr>
+        <th>Created date</th>
+        <th>Username</th>
+        <th>Title</th>
+        <th>Cover</th>
+        <th>Description</th>
+        <th>Published Date</th>
+        <th>Pages</th>
+        <th>Category</th>
+        <th>Author</th>
+        <th>Request status</th>
+        <th>Add</th>
+        <th>Reject</th>
+    </tr>
+    <th:block th:each="request : ${requests}">
+        <tr>
+            <td th:text="${request.createdAt}"></td>
+            <td th:text="${request.userId.name}"></td>
+            <td th:text="${request.title}"></td>
+            <td>
+                <img th:src="@{'http://localhost:8080/' + ${request.coverImg}}" style="height: 200px;width: 150px">
+            </td>
+            <td th:text="${request.description}"></td>
+            <td th:text="${request.publishedDate}"></td>
+            <td th:text="${request.pages}"></td>
+            <td th:text="${request.categories}"></td>
+            <td th:text="${request.author}">Author</td>
+            <td>
+                <span th:if="${request.requestStatus == 0}">New</span>
+                <span th:if="${request.requestStatus == 1}">In progress</span>
+                <span th:if="${request.requestStatus == 2}">Added</span>
+                <span th:if="${request.requestStatus == 3}">Rejected</span>
+            </td>
+            <td><a th:href="@{/admin/request/addBook/__${request.requestId}__}">Add book</a></td>
+            <td><a th:href="@{/admin/request/rejectBook/__${request.requestId}__}">Reject request</a></td>
+        </tr>
+    </th:block>
+</table>
+<div>
+    <a th:href="@{'/admin/request'(page=${requests.number - 1})}" th:if="${requests.hasPrevious()}">Previous</a>
+    <span th:text="${requests.number + 1}"></span>/<span th:text="${requests.totalPages}"></span>
+    <a th:href="@{'/admin/request'(page=${requests.number + 1})}" th:if="${requests.hasNext()}">Next</a>
+</div>
+<div th:replace="adminLayout :: adminFooter"></div>
+</body>
+</html>
