@@ -47,4 +47,9 @@ public class BookServiceImpl implements IBookService {
     public Page<Book> findAllByCategories(Long categoryId, Pageable pageable) {
         return bookRepository.findAllByCategories(categoryId,pageable);
     }
+
+    @Override
+    public Page<Book> findAllByAuthorId(Long id, Pageable pageable) {
+        return bookRepository.findAllByAuthorId(id, pageable);
+    }
 }

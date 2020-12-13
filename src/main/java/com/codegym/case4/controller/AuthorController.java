@@ -1,7 +1,9 @@
 package com.codegym.case4.controller;
 
 import com.codegym.case4.model.Author;
+import com.codegym.case4.model.Book;
 import com.codegym.case4.service.Author.IAuthorService;
+import com.codegym.case4.service.Book.IBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,8 @@ public class AuthorController {
     @Autowired
     private IAuthorService iAuthorService;
 
+    @Autowired
+    private IBookService bookService;
 
     @GetMapping
     public ModelAndView listAuthor(@PageableDefault(size = 10) Pageable pageable) {
@@ -71,5 +75,15 @@ public class AuthorController {
         modelAndView.addObject("authors", authors);
         return modelAndView;
 
+    }
+
+    @GetMapping("/{id}")
+    public ModelAndView authorDetail(@PathVariable Long id,@PageableDefault(size = 10) Pageable pageable){
+        Page<Book> books = bookService.findAllByAuthorId(id, pageable);
+        Author author = iAuthorService.findById(id).get();
+        ModelAndView modelAndView = new ModelAndView("/author/detail");
+        modelAndView.addObject("books",books);
+        modelAndView.addObject("author",author);
+        return  modelAndView;
     }
 }

@@ -51,4 +51,17 @@ public class Request implements Cloneable {
         this.requestStatus = requestStatus;
         this.createdAt = LocalDate.now();
     }
+
+    public Request(User userId, @NotEmpty String title, String coverImg, String description, long publishedDate, int pages, String categories, @NotEmpty String author, int requestStatus, LocalDate createdAt) {
+        this.userId = userId;
+        this.title = title;
+        this.coverImg = coverImg;
+        this.description = description;
+        this.publishedDate = publishedDate;
+        this.pages = pages;
+        this.categories = categories;
+        this.author = author;
+        this.requestStatus = requestStatus;
+        this.createdAt = createdAt;
+    }
 }

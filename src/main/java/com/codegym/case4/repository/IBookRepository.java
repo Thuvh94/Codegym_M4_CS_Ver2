@@ -32,5 +32,7 @@ public interface IBookRepository extends PagingAndSortingRepository<Book,Long> {
 
 //    @Query(value= "SELECT Book_bookId from books_categories b where b.categories =:id")
 //    List<Long> findAllByCategories(@Param("id") Long id, Pageable pageable);
+    @Query(value = "select * from books books where books.authorId =:id and books.isDeleted = 0",nativeQuery = true)
+    Page<Book> findAllByAuthorId(@Param("id") Long id, Pageable pageable);
 
 }
