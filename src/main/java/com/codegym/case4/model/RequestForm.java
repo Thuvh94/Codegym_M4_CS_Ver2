@@ -1,99 +1,41 @@
 package com.codegym.case4.model;
 
-import com.codegym.case4.model.User;
+import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Set;
 
+@Data
 public class RequestForm {
     private Long requestId;
-    private User user;
+    private User userId;
     private String title;
     private MultipartFile coverImg;
     private String description;
+    private long publishedDate;
+    private int pages;
+    private String categories;
     private String author;
     private int requestStatus;
-
+    private LocalDate createdAt;
+    //    0: new, 1: đang xử lý, 2: đã xử lý xong
     public RequestForm() {
     }
 
-    public RequestForm(Long requestId, User user, String title, MultipartFile coverImg, String description, String author, int requestStatus) {
+    public RequestForm(Long requestId, User userId, String title, MultipartFile coverImg, String description, long publishedDate, int pages, String categories, String author, int requestStatus, Timestamp createdAt) {
         this.requestId = requestId;
-        this.user = user;
+        this.userId = userId;
         this.title = title;
         this.coverImg = coverImg;
         this.description = description;
+        this.publishedDate = publishedDate;
+        this.pages = pages;
+        this.categories = categories;
         this.author = author;
         this.requestStatus = requestStatus;
-    }
-
-    public Long getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(Long requestId) {
-        this.requestId = requestId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public MultipartFile getCoverImg() {
-        return coverImg;
-    }
-
-    public void setCoverImg(MultipartFile coverImg) {
-        this.coverImg = coverImg;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public int getRequestStatus() {
-        return requestStatus;
-    }
-
-    public void setRequestStatus(int requestStatus) {
-        this.requestStatus = requestStatus;
-    }
-
-    @Override
-    public String toString() {
-        return "Request{" +
-                "requestId=" + requestId +
-                ", user=" + user +
-                ", title='" + title + '\'' +
-                ", coverImg='" + coverImg + '\'' +
-                ", description='" + description + '\'' +
-                ", author='" + author + '\'' +
-                ", requestStatus=" + requestStatus +
-                '}';
+        this.createdAt = LocalDate.now();
     }
 }

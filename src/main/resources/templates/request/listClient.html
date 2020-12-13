@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Request list</title>
+</head>
+<body>
+<h1 align="center">Yout requests</h1>
+<div align="center">
+    <a href="/client/request/create">Create new request</a>
+</div>
+<br/>
+<table border="1" align="center">
+    <tr>
+        <th>Created date</th>
+        <th>Title</th>
+        <th>Cover</th>
+        <th>Description</th>
+        <th>Published Date</th>
+        <th>Pages</th>
+        <th>Category</th>
+        <th>Author</th>
+        <th>Request status</th>
+    </tr>
+    <th:block th:each="request : ${requests}">
+        <tr>
+            <td th:text="${request.createdAt}"></td>
+            <td th:text="${request.title}"></td>
+            <td>
+                <img th:src="@{'http://localhost:8080/' + ${request.coverImg}}" style="height: 200px;width: 150px">
+            </td>
+            <td th:text="${request.description}"></td>
+            <td th:text="${request.publishedDate}"></td>
+            <td th:text="${request.pages}"></td>
+            <td th:text="${request.categories}"></td>
+            <td th:text="${request.author}">Author</td>
+            <td>
+                <span th:if="${request.requestStatus == 0}">New</span>
+                <span th:if="${request.requestStatus == 1}">In progress</span>
+                <span th:if="${request.requestStatus == 2}">Added</span>
+                <span th:if="${request.requestStatus == 3}">Rejected</span>
+            </td>
+        </tr>
+    </th:block>
+</table>
+<!--<div>-->
+<!--    <a th:href="@{'/book'(page=${books.number - 1})}" th:if="${books.hasPrevious()}">Previous</a>-->
+<!--    <span th:text="${books.number + 1}"></span>/<span th:text="${books.totalPages}"></span>-->
+<!--    <a th:href="@{'/book'(page=${books.number + 1})}" th:if="${books.hasNext()}">Next</a>-->
+<!--</div>-->
+<!--<div th:replace="adminLayout :: adminFooter"></div>-->
+</body>
+</html>

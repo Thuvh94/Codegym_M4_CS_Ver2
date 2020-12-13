@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create request</title>
+</head>
+<body>
+<h1 align="center">Create request</h1>
+<!--<div align="center">-->
+<!--    <a href="/admin/book">Book list</a>-->
+<!--</div>-->
+<th:block th:if="${message}">
+    <p th:text="${message}"></p>
+</th:block>
+<form th:action="@{/client/request/create}" th:object="${requestForm}" method="post" enctype="multipart/form-data">
+    <table align="center">
+        <tr>
+            <td>Title:</td>
+            <td><input type="text" th:field="*{title}"/></td>
+            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</td>
+        </tr>
+
+        <tr>
+            <td>Cover image:</td>
+            <td><input type="file" th:field="*{coverImg}"></td>
+        </tr>
+        <tr>
+            <td>Description:</td>
+            <td><textarea th:field="*{description}" rows="4" cols="30"/></td>
+        </tr>
+
+        <tr>
+            <td>Publication Date:</td>
+            <td><input type="number" th:field="*{publishedDate}"/></td>
+        </tr>
+
+        <tr>
+            <td>Pages:</td>
+            <td><input type="number" th:field="*{pages}"/></td>
+        </tr>
+
+        <tr>
+            <td>Genre:</td>
+            <td>
+                <input type="text" th:field="*{categories}"/></td>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Authors:</td>
+            <td>
+                <input type="text" th:field="*{author}"/></td>
+            </td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Create request"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
