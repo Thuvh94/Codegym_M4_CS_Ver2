@@ -83,10 +83,8 @@
                 </div>
             </div>
         </nav>
-        <form class="d-flex">
-
-            <input class="form-control me-2 d-inline" type="search" placeholder="Search..." aria-label="Search">
-            <button class="btn btn-outline-success d-inline" type="submit">Search</button>
+        <form class="d-flex" action="/logout">
+            <button class="btn btn-outline-success d-inline" type="submit">Log out</button>
         </form>
     </nav>
 </div>
@@ -171,7 +169,7 @@
 </div>
 <!--Khu vực footer-->
 <div th:fragment="adminFooter">
-    <div id="footer1" style="background-color: black; color: #CDCDCD" align="center">
+    <div id="footer1" style="background-color: black; color: #CDCDCD; bottom: 0;width: 100%" align="center">
         <div>Address: 25, My Dinh Str, Nam Tu Liem Dist, Hanoi</div>
         <div>@Product by Ltd. Tung Nguyen</div>
     </div>

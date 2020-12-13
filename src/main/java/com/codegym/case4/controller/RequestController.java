@@ -138,8 +138,8 @@ public class RequestController {
         BookForm bookForm = new BookForm(null, null, request.getTitle(), request.getDescription(),
                 false, request.getPublishedDate(), request.getPages(), null, null);
         ModelAndView modelAndView = new ModelAndView("/request/addRequest");
+        modelAndView.addObject("bookForm", bookForm);
         modelAndView.addObject("coverImgLink", request.getCoverImg());
-        modelAndView.addObject("request", bookForm);
         modelAndView.addObject("requestCategory", request.getCategories());
         modelAndView.addObject("requestAuthor", request.getAuthor());
         modelAndView.addObject("requestId", requestId);
@@ -147,10 +147,10 @@ public class RequestController {
     }
 
     @PostMapping("/admin/request/addBook")
-    public RedirectView addRequest(@ModelAttribute("request") BookForm bookForm, @ModelAttribute("requestId") Long requestId) {
+    public RedirectView addRequest(@ModelAttribute BookForm bookForm, @ModelAttribute("requestId") Long requestId) {
         MultipartFile multipartFile = bookForm.getCoverImg();
         String fileName = multipartFile.getOriginalFilename();
-        Book editedBook = new Book(null, fileName, bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
+        Book editedBook = new Book(bookForm.getBookId(),fileName, bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
                 bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(), bookForm.getAuthorId());
         if (fileName.equals("")) {
             Request request = requestService.findById(requestId).get();
@@ -165,15 +165,16 @@ public class RequestController {
             }
         }
         bookService.save(editedBook);
+        System.out.println(editedBook);
         Request request = requestService.findById(requestId).get();
         request.setRequestStatus(2);
-        return new RedirectView("/admin/request/list");
+        requestService.save(request);
+        return new RedirectView("/admin/request");
     }
 
     @GetMapping("/admin/request/rejectBook/{requestId}")
     public RedirectView rejectBook(@PathVariable Long requestId) {
         Request request = requestService.findById(requestId).get();
-        System.out.println(request);
         request.setRequestStatus(3);
         requestService.save(request);
         return new RedirectView("/admin/request");

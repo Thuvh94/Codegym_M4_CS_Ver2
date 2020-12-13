@@ -60,6 +60,17 @@ public class Book {
         this.authorId = authorId;
     }
 
+    public Book(String coverImg, @NotEmpty String title, String description, boolean isDeleted, long publishedDate, int pages, Set<Category> categories, Author authorId) {
+        this.coverImg = coverImg;
+        this.title = title;
+        this.description = description;
+        this.isDeleted = isDeleted;
+        this.publishedDate = publishedDate;
+        this.pages = pages;
+        this.categories = categories;
+        this.authorId = authorId;
+    }
+
     public Long getBookId() {
         return bookId;
     }
