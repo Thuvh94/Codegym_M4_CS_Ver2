@@ -1,6 +1,7 @@
 package com.codegym.case4.service.Book;
 
 import com.codegym.case4.model.Book;
+import com.codegym.case4.model.Category;
 import com.codegym.case4.repository.IBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,5 +41,10 @@ public class BookServiceImpl implements IBookService {
     @Override
     public Page<Book> findAllByTitleContainingAndDeletedIsFalse(String title, Pageable pageable) {
         return bookRepository.findAllByTitleContaining(title,pageable);
+    }
+
+    @Override
+    public Page<Book> findAllByCategories(Long categoryId, Pageable pageable) {
+        return bookRepository.findAllByCategories(categoryId,pageable);
     }
 }

@@ -1,8 +1,13 @@
 package com.codegym.case4.controller;
 
+import com.codegym.case4.model.Book;
 import com.codegym.case4.model.Category;
+import com.codegym.case4.service.Book.IBookService;
 import com.codegym.case4.service.Category.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +19,9 @@ import java.util.Optional;
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
+
+    @Autowired
+    private IBookService bookService;
 
     @GetMapping
     public ModelAndView listCategory() {
@@ -62,6 +70,16 @@ public class CategoryController {
         ModelAndView modelAndView = new ModelAndView("category/list");
         modelAndView.addObject("categorys", categories);
         return modelAndView;
+    }
+
+    @GetMapping("/{id}")
+    public ModelAndView findBooksByCategoryId(@PathVariable Long id,@PageableDefault(size = 10) Pageable pageable){
+        Category category = categoryService.findById(id).get();
+        Page<Book> books =  bookService.findAllByCategories(id,pageable);
+        ModelAndView modelAndView = new ModelAndView("/category/detail");
+        modelAndView.addObject("books",books);
+        modelAndView.addObject("category",category);
+        return  modelAndView;
     }
 
 }
