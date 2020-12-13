@@ -146,8 +146,8 @@ public class RequestController {
         return modelAndView;
     }
 
-    @PostMapping("/admin/request/addBook")
-    public RedirectView addRequest(@ModelAttribute BookForm bookForm, @ModelAttribute("requestId") Long requestId) {
+    @PostMapping("/admin/request/addBook/{requestId}")
+    public RedirectView addRequest(@ModelAttribute BookForm bookForm, @PathVariable Long requestId) {
         MultipartFile multipartFile = bookForm.getCoverImg();
         String fileName = multipartFile.getOriginalFilename();
         Book editedBook = new Book(bookForm.getBookId(),fileName, bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),

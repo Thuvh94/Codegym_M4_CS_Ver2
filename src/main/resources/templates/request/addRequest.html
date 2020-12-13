@@ -17,7 +17,8 @@
 <!--<th:block th:if="${message}">-->
 <!--  <p th:text="${message}"></p>-->
 <!--</th:block>-->
-<form th:action="@{/admin/request/addBook}" th:object="${bookForm}" method="post" enctype="multipart/form-data">
+<form th:action="@{/admin/request/addBook/__${requestId}__}" th:object="${bookForm}" method="post" enctype="multipart/form-data">
+
   <table align="center">
     <tr>
       <td><input type="hidden" th:value="${requestId}"></td>

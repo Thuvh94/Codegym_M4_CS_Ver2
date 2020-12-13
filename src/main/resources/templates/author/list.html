@@ -36,7 +36,6 @@
         <td><a th:text="${author.getAuthorDesc()}"></a></td>
         <td><a th:href="@{/{id}/edit(id = ${author.authorId})}">Edit</a></td>
         <td><a th:href="@{/{id}/delete(id = ${author.authorId})}">Delete</a></td>
-
     </tr>
 </table>
 <div th:replace="adminLayout :: adminFooter"></div>
