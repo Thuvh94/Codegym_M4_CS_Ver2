@@ -12,6 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface ICommentRepository extends JpaRepository<Comment,Long> {
-    @Query(value = "select * from comments comment where comment.bookId =:id",nativeQuery = true)
+    @Query(value = "select * from comments comment where comment.book =:id",nativeQuery = true)
     Page<Comment> findCommentByBookId(@Param("id") Long bookId, Pageable pageable);
 }

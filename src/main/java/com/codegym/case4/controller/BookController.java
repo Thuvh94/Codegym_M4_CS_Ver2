@@ -4,12 +4,15 @@ import com.codegym.case4.model.*;
 import com.codegym.case4.service.Author.IAuthorService;
 import com.codegym.case4.service.Book.IBookService;
 import com.codegym.case4.service.Category.ICategoryService;
+import com.codegym.case4.service.Comment.ICommentService;
 import com.codegym.case4.service.Rate.IRateService;
+import com.codegym.case4.service.User.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
@@ -38,6 +41,12 @@ public class BookController {
 
     @Autowired
     private IRateService rateService;
+
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private ICommentService commentService;
 
     @Value("${upload.path}")
     private String fileUpload;
@@ -111,37 +120,37 @@ public class BookController {
         return "redirect:/admin/book";
     }
 
-//     Edit function
+    //     Edit function
     @GetMapping("/edit/{id}")
-    public ModelAndView showEditForm(@PathVariable Long id){
+    public ModelAndView showEditForm(@PathVariable Long id) {
         Optional<Book> editedBook = bookService.findById(id);
-        if(editedBook != null) {
+        if (editedBook != null) {
             Book book = editedBook.get();
-            BookForm bookForm = new BookForm(book.getBookId(),null,book.getTitle(),book.getDescription(),book.isDeleted(),
-                            book.getPublishedDate(),book.getPages(),book.getCategories(),book.getAuthorId());
+            BookForm bookForm = new BookForm(book.getBookId(), null, book.getTitle(), book.getDescription(), book.isDeleted(),
+                    book.getPublishedDate(), book.getPages(), book.getCategories(), book.getAuthorId());
             ModelAndView modelAndView = new ModelAndView("/book/edit");
-            modelAndView.addObject("selectedCategories",book.getCategories());
-            modelAndView.addObject("coverImgLink",book.getCoverImg());
+            modelAndView.addObject("selectedCategories", book.getCategories());
+            modelAndView.addObject("coverImgLink", book.getCoverImg());
             modelAndView.addObject("book", bookForm);
             return modelAndView;
 
-        }else {
+        } else {
             ModelAndView modelAndView = new ModelAndView("/error.404");
             return modelAndView;
         }
     }
+
     @PostMapping("/edit")
-    public ModelAndView updateBook(@ModelAttribute("book") BookForm bookForm){
+    public ModelAndView updateBook(@ModelAttribute("book") BookForm bookForm) {
         MultipartFile multipartFile = bookForm.getCoverImg();
         String fileName = multipartFile.getOriginalFilename();
-        Book editedBook = new Book(bookForm.getBookId(),fileName,bookForm.getTitle(),bookForm.getDescription(),bookForm.isDeleted(),
-                bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(),bookForm.getAuthorId());
-        if(fileName.equals("")){
+        Book editedBook = new Book(bookForm.getBookId(), fileName, bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
+                bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(), bookForm.getAuthorId());
+        if (fileName.equals("")) {
             Book book1 = bookService.findById(bookForm.getBookId()).get();
             fileName = book1.getCoverImg();
             editedBook.setCoverImg(fileName);
-        }
-        else {
+        } else {
             try {
                 FileCopyUtils.copy(bookForm.getCoverImg().getBytes(), new File(this.fileUpload + fileName));
                 editedBook.setCoverImg(fileName);
@@ -151,27 +160,45 @@ public class BookController {
         }
         bookService.save(editedBook);
         ModelAndView modelAndView = new ModelAndView("/book/edit");
-        modelAndView.addObject("coverImgLink",fileName);
+        modelAndView.addObject("coverImgLink", fileName);
         modelAndView.addObject("message", "Book updated successfully");
         modelAndView.addObject("book", bookForm);
         return modelAndView;
     }
-// Test chức năng rate
+
+    // Test chức năng rate
     @GetMapping("/rate")
-    public ModelAndView showRatingForm(){
+    public ModelAndView showRatingForm() {
         ModelAndView modelAndView = new ModelAndView("/book/demoStar1");
         return modelAndView;
     }
 
     @GetMapping("/rate/rating")
-    public ModelAndView getRate(@RequestParam("rating") int rating){
+    public ModelAndView getRate(@RequestParam("rating") int rating) {
         ModelAndView modelAndView = new ModelAndView("/book/demoStar1");
         List<Rate> rates = rateService.findRatesByBookId(1L);
         System.out.println(rates);
         Float average = rateService.averageRates(1L);
-        modelAndView.addObject("rating",rating);
-        modelAndView.addObject("average",average);
+        modelAndView.addObject("rating", rating);
+        modelAndView.addObject("average", average);
         return modelAndView;
     }
+
+    // Test chức năng comment
+    @GetMapping("/comment")
+    public ModelAndView showCommentForm(@PageableDefault(size = 10) Pageable pageable){
+        ModelAndView modelAndView = new ModelAndView("/book/demoComment");
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findByUsername(userPrincipal.getUsername());
+        Book book = bookService.findById(1L).get();
+        Page<Comment> allComment = commentService.findCommentByBookId(1L, pageable);
+        modelAndView.addObject("allComment",allComment);
+        modelAndView.addObject("comment",new CommentForm());
+        modelAndView.addObject("user",user);
+        modelAndView.addObject("book",book);
+
+        return modelAndView;
+    }
+
 
 }
