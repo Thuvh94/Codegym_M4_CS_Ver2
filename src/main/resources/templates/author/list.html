@@ -34,8 +34,8 @@
         <td><a th:text="${author.getAuthorId()}" th:href="@{/view-author/__${author.getAuthorId()}__}"></a></td>
         <td><a  th:text="${author.authorName}" th:href="@{/admin/author/__${author.authorId}__}"></a></td>
         <td><a th:text="${author.getAuthorDesc()}"></a></td>
-        <td><a th:href="@{/{id}/edit(id = ${author.authorId})}">Edit</a></td>
-        <td><a th:href="@{/{id}/delete(id = ${author.authorId})}">Delete</a></td>
+        <td><a th:href="@{/admin/author/{id}/edit(id = ${author.authorId})}">Edit</a></td>
+        <td><a th:href="@{/admin/author/{id}/delete(id = ${author.authorId})}">Delete</a></td>
     </tr>
 </table>
 <div th:replace="adminLayout :: adminFooter"></div>

@@ -22,8 +22,8 @@
     <tr th:each="category: ${categorys}">
         <td><a th:text="${category.getCategoryId()}"></a></td>
         <td><a th:text="${category.categoryName}" th:href="@{/admin/category/__${category.categoryId}__}"></a><br></td>
-        <td><a th:href="@{category/edit/{id}(id = ${category.categoryId})}">Edit</a></td>
-        <td><a th:href="@{category/{id}/delete(id = ${category.categoryId})}">Delete</a></td>
+        <td><a th:href="@{/admin/category/edit/{id}(id = ${category.categoryId})}">Edit</a></td>
+        <td><a th:href="@{/admin/category/{id}/delete(id = ${category.categoryId})}">Delete</a></td>
     </tr>
 </table>
 <div th:replace="adminLayout :: adminFooter"></div>
