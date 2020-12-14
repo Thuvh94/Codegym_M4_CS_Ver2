@@ -1,12 +1,10 @@
 package com.codegym.case4.controller;
 
-import com.codegym.case4.model.Author;
-import com.codegym.case4.model.Book;
-import com.codegym.case4.model.BookForm;
-import com.codegym.case4.model.Category;
+import com.codegym.case4.model.*;
 import com.codegym.case4.service.Author.IAuthorService;
 import com.codegym.case4.service.Book.IBookService;
 import com.codegym.case4.service.Category.ICategoryService;
+import com.codegym.case4.service.Rate.IRateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -23,6 +21,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -36,6 +35,9 @@ public class BookController {
 
     @Autowired
     private IAuthorService authorService;
+
+    @Autowired
+    private IRateService rateService;
 
     @Value("${upload.path}")
     private String fileUpload;
@@ -154,4 +156,22 @@ public class BookController {
         modelAndView.addObject("book", bookForm);
         return modelAndView;
     }
+// Test chức năng rate
+    @GetMapping("/rate")
+    public ModelAndView showRatingForm(){
+        ModelAndView modelAndView = new ModelAndView("/book/demoStar1");
+        return modelAndView;
+    }
+
+    @GetMapping("/rate/rating")
+    public ModelAndView getRate(@RequestParam("rating") int rating){
+        ModelAndView modelAndView = new ModelAndView("/book/demoStar1");
+        List<Rate> rates = rateService.findRatesByBookId(1L);
+        System.out.println(rates);
+        Float average = rateService.averageRates(rates);
+        modelAndView.addObject("rating",rating);
+        modelAndView.addObject("average",average);
+        return modelAndView;
+    }
+
 }

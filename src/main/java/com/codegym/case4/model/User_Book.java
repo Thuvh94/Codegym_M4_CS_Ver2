@@ -17,7 +17,7 @@ public class User_Book {
 
     @ManyToOne
     private User userId;
-
+//
     private int status;
 
     public User_Book() {

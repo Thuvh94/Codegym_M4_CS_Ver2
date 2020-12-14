@@ -1,4 +1,4 @@
-package model;
+package com.codegym.case4.model;
 
 import com.codegym.case4.model.Book;
 import com.codegym.case4.model.User;
@@ -28,6 +28,12 @@ public class Rate {
 
     public Rate(Long id, Book bookId, User userId, @Min(1) @Max(5) int rate) {
         this.id = id;
+        this.bookId = bookId;
+        this.userId = userId;
+        this.rate = rate;
+    }
+
+    public Rate(Book bookId, User userId, @Min(1) @Max(5) int rate) {
         this.bookId = bookId;
         this.userId = userId;
         this.rate = rate;
@@ -63,5 +69,15 @@ public class Rate {
 
     public void setRate(int rate) {
         this.rate = rate;
+    }
+
+    @Override
+    public String toString() {
+        return "Rate{" +
+                "id=" + id +
+                ", bookId=" + bookId +
+                ", userId=" + userId +
+                ", rate=" + rate +
+                '}';
     }
 }
