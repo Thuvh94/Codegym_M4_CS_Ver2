@@ -22,14 +22,7 @@ public class RateServiceImpl implements IRateService{
     }
 
     @Override
-    public Float averageRates(List<Rate> rates) {
-        float sum = 0;
-        for (int i = 0; i < rates.size(); i++) {
-            sum+=rates.get(i).getRate();
-        }
-        System.out.println();
-        float average = sum/rates.size();
-        System.out.println(average);
-        return average;
+    public Float averageRates(Long bookId) {
+        return rateRepository.averageRates(bookId);
     }
 }

@@ -12,5 +12,7 @@ import java.util.List;
 public interface IRateRepository extends JpaRepository<Rate,Long> {
     @Query(value = "select * from rates rates where rates.bookId =:id",nativeQuery = true)
     List<Rate> findRatesByBookId(@Param("id") Long bookId);
-//    Float averageRate();
+
+    @Query(value="select AVG(rate) from rates rates where rates.bookId =:id",nativeQuery = true)
+    Float averageRates(@Param("id") Long bookId);
 }

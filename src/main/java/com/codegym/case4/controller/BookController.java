@@ -168,7 +168,7 @@ public class BookController {
         ModelAndView modelAndView = new ModelAndView("/book/demoStar1");
         List<Rate> rates = rateService.findRatesByBookId(1L);
         System.out.println(rates);
-        Float average = rateService.averageRates(rates);
+        Float average = rateService.averageRates(1L);
         modelAndView.addObject("rating",rating);
         modelAndView.addObject("average",average);
         return modelAndView;

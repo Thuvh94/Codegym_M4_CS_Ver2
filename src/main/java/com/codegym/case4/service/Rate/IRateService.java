@@ -11,7 +11,7 @@ public interface IRateService {
 
     Rate save(Rate rate);
 
-    Float averageRates(List<Rate> rates);
+    Float averageRates(Long bookId);
 
 //    Optional<Rate> findById(Long id);
 //
