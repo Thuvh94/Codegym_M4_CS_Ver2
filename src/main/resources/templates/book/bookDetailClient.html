@@ -121,10 +121,10 @@
                         data: JSON.stringify(json),
                         url: "/rateCreate", //link này ở RequestMapping
                         success: function (rate) { // reponse này ở requestBody
-                            var respContent = "";
-                            respContent += "<div><span>";
-                            respContent += rate.rate + "</span></div>";
-                            $("#yourRate").append("Your rate" + respContent);
+                            // var respContent = "";
+                            // respContent += "<div><span>";
+                            // respContent += rate.rate + "</span></div>";
+                            // $("#yourRate").html("Thank you for your rating!");
                             // for (var i = 1; i <= rate.rate; i++) {
                             //     $('#star' + i).attr('checked', true);
                             // }
@@ -135,7 +135,7 @@
                     event.preventDefault();
                     close();// gán các biến vào các trường tương ứng của đối tượng json.
                 });
-        //    end function for rating
+            //    end function for rating
         });
     </script>
     <title>Layout</title>
@@ -220,12 +220,11 @@
     </nav>
     <!--                Code book information-->
     <div class="row">
-
         <article class="col-sm-9">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col book-title">
-                        Book Detail:
+                        <h6>Book Detail</h6>
                     </div>
                 </div>
                 <br>
@@ -308,10 +307,9 @@
                                                 </tr>
                                                 <tr>
                                                     <td align="center">
-                                                        <button class="btn btn-success"
-                                                                th:href="@{/client/book/view__${book.authorId.authorId}}">
-                                                            Views
-                                                        </button>
+                                                        <a class="btn btn-success"
+                                                           th:href="@{/client/book/viewDetail/__${book.bookId}__}"><span
+                                                                style="color: white">View</span></a>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -327,60 +325,70 @@
                 <!--                Code for comment-->
                 <h6>COMMUNITY REVIEWS</h6>
                 <hr>
-                <!--                Code for rating-->
-                <th:block th:if="${rating}">
-                    <input type="hidden" id="ratingScore" th:value="${rating}">
-                    <p th:text="${rating}"></p>
-                </th:block>
-
+<!--                Code for rate and comment information-->
                 <th:block th:if="${average}">
-                    <p th:text="${average}"></p>
+                    <p th:text="'Average: ' + ${average} + 'stars'"></p>
+<!--                    <p th:text="${} + ratings"></p>-->
+<!--                    <p th:text="${} + reviews"></p>-->
                 </th:block>
-                <div class="rating">
-                    <span><input type="radio" name="rating" id="str5" value="5"><label for="str5"></label></span>
-                    <span><input type="radio" name="rating" id="str4" value="4"><label for="str4"></label></span>
-                    <span><input type="radio" name="rating" id="str3" value="3"><label for="str3"></label></span>
-                    <span><input type="radio" name="rating" id="str2" value="2"><label for="str2"></label></span>
-                    <span><input type="radio" name="rating" id="str1" value="1"><label for="str1"></label></span>
-                    <p id="yourRate"></p>
-                </div>
-                <!--                End code for rating-->
 
-                <!--                Comment input field-->
+<!--                End Code for rate and comment information-->
+
+                <!--                Code for rating-->
                 <div class="row">
-                    <div class="container form-group">
-                        <form id="formComment" th:object="${comment}">
-                            <input type="hidden" id="user" name="user" th:value="${user.userId}">
-                            <input type="hidden" id="book"  th:value="${book.bookId}">
-                            <textarea class="form-control" rows="4" id="content" style="width: 100%"
-                                      th:field="${comment.content}"></textarea><br>
-                            <td><input type="submit" class="btn btn-success" value="Write a review"
-                                       style="float: right"></td>
-                        </form>
+                    <strong th:text="${user.name}+' ,  start your review of ' + ${book.title}"></strong><br>
+                    <!--                    <th:block th:if="${rating}">-->
+                    <!--                        <input type="hidden" id="ratingScore" th:value="${rating}">-->
+                    <!--                        <p th:text="${rating}"></p>-->
+                    <!--                    </th:block>-->
+
+
+                    <div class="rating">
+                        <span><input type="radio" name="rating" id="str5" value="5"><label for="str5"></label></span>
+                        <span><input type="radio" name="rating" id="str4" value="4"><label for="str4"></label></span>
+                        <span><input type="radio" name="rating" id="str3" value="3"><label for="str3"></label></span>
+                        <span><input type="radio" name="rating" id="str2" value="2"><label for="str2"></label></span>
+                        <span><input type="radio" name="rating" id="str1" value="1"><label for="str1"></label></span>
                     </div>
                 </div>
-                <!--               End comment input field-->
-
-                <!--                Comment thread-->
-                <div class="row">
-                    <div class="container">
-                        <div id="allComment">
-                            <th:block th:each="comment : ${allComment}">
-                                <strong th:text="${comment.user.name}"></strong><br>
-                                <div>
-                                    <span th:text="${comment.content}"></span>
-                                </div>
-                                <br>
-                            </th:block>
-                        </div>
-                    </div>
-                </div>
-                <!--               End Comment thread-->
-                <!--               End Code for comment-->
-
             </div>
+
+            <!--                End code for rating-->
+
+            <!--                Comment input field-->
+            <div class="row">
+                <div class="container form-group">
+                    <form id="formComment" th:object="${comment}">
+                        <input type="hidden" id="user" name="user" th:value="${user.userId}">
+                        <input type="hidden" id="book" th:value="${book.bookId}">
+                        <textarea class="form-control" rows="4" id="content" style="width: 100%"
+                                  th:field="${comment.content}"></textarea><br>
+                        <td><input type="submit" class="btn btn-success" value="Write a review"
+                                   style="float: right"></td>
+                    </form>
+                </div>
+            </div>
+            <!--               End comment input field-->
+
+            <!--                Comment thread-->
+            <div class="row">
+                <div class="container">
+                    <div id="allComment">
+                        <th:block th:each="comment : ${allComment}">
+                            <strong th:text="${comment.user.name}"></strong><br>
+                            <div>
+                                <span th:text="${comment.content}"></span>
+                            </div>
+                            <br>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+            <!--               End Comment thread-->
+            <!--               End Code for comment-->
         </article>
         </article>
+        <!--        Code for side bar-->
         <aside class="col-sm-3">
             <div class="poly-cart">
                 <div class="card">
@@ -434,6 +442,7 @@
                 </div>
             </div>
         </aside>
+        <!--        End code for side bar-->
     </div>
 </div>
 
