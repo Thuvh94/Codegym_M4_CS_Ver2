@@ -3,18 +3,23 @@ package com.codegym.case4.model;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 public class BookForm {
     private Long bookId;
     private MultipartFile coverImg;
     @NotEmpty(message = "This field is required.")
     private String title;
+    @NotEmpty(message = "This field is required.")
     private String description;
     private boolean isDeleted;
     private long publishedDate;
     private int pages;
     private Set<Category> categories;
+    @NotNull(message = "This field is required.")
+    @Valid
     private Author authorId;
 
     public BookForm() {

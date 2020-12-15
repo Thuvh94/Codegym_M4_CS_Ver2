@@ -39,8 +39,12 @@
             <td><input type="file" th:field="*{coverImg}"></td>
         </tr>
         <tr>
-            <td>Description:</td>
+            <td>Description:<strong style="color: red">*</strong></td>
             <td><textarea th:field="*{description}" rows="4" cols="30"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color: red">Title Error</td>
         </tr>
 
         <tr>
@@ -64,11 +68,11 @@
                 </div>
             </td>
         </tr>
-
-        <tr>
-            <td>Authors:</td>
+         <tr>
+            <td>Authors:<strong style="color: red">*</strong></td>
             <td>
                 <select th:field="*{authorId}">
+                    <option selected value="">Select author</option>
                     <option th:each="author : ${allAuthors}" th:value="${author.authorId}"
                             th:text="${author.authorName}"></option>
                 </select>
@@ -106,7 +110,10 @@
                 <!--                -->
             </td>
         </tr>
-
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}" style="color: red">Title Error</td>
+        </tr>
         <tr>
             <td></td>
             <td><input type="submit" value="Create book"></td>
