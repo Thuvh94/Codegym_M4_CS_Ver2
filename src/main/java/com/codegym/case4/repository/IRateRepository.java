@@ -20,4 +20,5 @@ public interface IRateRepository extends JpaRepository<Rate,Long> {
     @Query(value = "select * from rates rates where rates.bookId = :bookId and rates.userId = :userId",nativeQuery = true)
     Optional<Rate> findRateByUserAndBook(@Param("bookId") Long bookId, @Param("userId") Long userId );
 
+
 }

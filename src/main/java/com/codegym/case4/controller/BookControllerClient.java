@@ -59,16 +59,21 @@ public class BookControllerClient {
     public ModelAndView viewBookDetail(@PathVariable Long id, @PageableDefault(size = 10) Pageable pageable) {
         Optional<Book> viewBook = bookService.findById(id);
         if (viewBook != null) {
-            Book book = viewBook.get();
             ModelAndView modelAndView = new ModelAndView("/book/bookDetailClient");
+
             Page<Book> books = bookService.findAllByAuthorId(id, pageable);
             modelAndView.addObject("books", books);
+            Book book = viewBook.get();
             modelAndView.addObject("book", book);
             modelAndView.addObject("user", getCurrentUser());
+            modelAndView.addObject("average",rateService.averageRates(id));
+            modelAndView.addObject("totalRate",rateService.findRatesByBookId(id).size());
             modelAndView.addObject("comment", new CommentForm());
+            modelAndView.addObject("rate", new RateForm());
             Page<Comment> allComment = commentService.findCommentByBookId(id, pageable);
             modelAndView.addObject("allComment", allComment);
-            modelAndView.addObject("rate", new RateForm());
+            modelAndView.addObject("totalComment",allComment.getTotalElements());
+
             return modelAndView;
 
         } else {
@@ -96,4 +101,6 @@ public class BookControllerClient {
         User user = userService.findByUsername(userPrincipal.getUsername());
         return user;
     }
+
+
 }
