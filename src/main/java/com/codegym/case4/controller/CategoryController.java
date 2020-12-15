@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Optional;
 
 @Controller
-@RequestMapping(value = "/admin/category")
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
@@ -23,7 +22,7 @@ public class CategoryController {
     @Autowired
     private IBookService bookService;
 
-    @GetMapping
+    @GetMapping("/admin/category")
     public ModelAndView listCategory() {
         Iterable<Category> categories = categoryService.findAll();
         ModelAndView modelAndView = new ModelAndView("category/list");
@@ -31,14 +30,14 @@ public class CategoryController {
         return modelAndView;
     }
 
-    @GetMapping("/create")
+    @GetMapping("/admin/category/create")
     public ModelAndView showCreateCategory() {
         ModelAndView modelAndView = new ModelAndView("category/create");
         modelAndView.addObject("category", new Category());
         return modelAndView;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/admin/category/create")
     public ModelAndView createCategory(Category category) {
         categoryService.save(category);
         ModelAndView modelAndView = new ModelAndView("category/create", "category", new Category());
@@ -46,7 +45,7 @@ public class CategoryController {
         return modelAndView;
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/admin/category/edit/{id}")
     public ModelAndView showEditForm(@PathVariable Long id) {
         Optional<Category> category = categoryService.findById(id);
         ModelAndView modelAndView = new ModelAndView("category/edit");
@@ -54,7 +53,7 @@ public class CategoryController {
         return modelAndView;
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/admin/category/edit")
     public ModelAndView updateCategory(@ModelAttribute Category category) {
         categoryService.save(category);
         ModelAndView modelAndView = new ModelAndView("category/edit");
@@ -63,7 +62,7 @@ public class CategoryController {
         return modelAndView;
     }
 
-    @GetMapping("/{id}/delete")
+    @GetMapping("/admin/category/{id}/delete")
     public ModelAndView deleteAuthor(@PathVariable Long id) {
         categoryService.remove(id);
         Iterable<Category> categories = categoryService.findAll();
@@ -72,7 +71,7 @@ public class CategoryController {
         return modelAndView;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/category/{id}")
     public ModelAndView findBooksByCategoryId(@PathVariable Long id,@PageableDefault(size = 10) Pageable pageable){
         Category category = categoryService.findById(id).get();
         Page<Book> books =  bookService.findAllByCategories(id,pageable);
@@ -81,6 +80,7 @@ public class CategoryController {
         modelAndView.addObject("category",category);
         return  modelAndView;
     }
+
 
 }
 

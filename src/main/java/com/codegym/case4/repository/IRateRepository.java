@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IRateRepository extends JpaRepository<Rate,Long> {
@@ -15,4 +16,8 @@ public interface IRateRepository extends JpaRepository<Rate,Long> {
 
     @Query(value="select AVG(rate) from rates rates where rates.bookId =:id",nativeQuery = true)
     Float averageRates(@Param("id") Long bookId);
+
+    @Query(value = "select * from rates rates where rates.bookId = :bookId and rates.userId = :userId",nativeQuery = true)
+    Optional<Rate> findRateByUserAndBook(@Param("bookId") Long bookId, @Param("userId") Long userId );
+
 }
