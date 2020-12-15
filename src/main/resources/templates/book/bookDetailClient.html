@@ -15,9 +15,50 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/poly.css">
+    <style>
+        .rating {
+            float: left;
+            width: 300px;
+        }
+
+        .rating span {
+            float: right;
+            position: relative;
+        }
+
+        .rating span input {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            opacity: 0;
+        }
+
+        .rating span label {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            color: #FFF;
+            background: #ccc;
+            font-size: 30px;
+            margin-right: 2px;
+            line-height: 30px;
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+        }
+
+        .rating span:hover ~ span label,
+        .rating span:hover label,
+        .rating span.checked label,
+        .rating span.checked ~ span label {
+            background: #F90;
+            color: #FFF;
+        }
+    </style>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            //function for comment
             $('#formComment').submit(function (event) { // là funtion được gọi khi submit from có id là newSmartphoneForm
                 var content = $('#content').val();
                 var book = $('#book').val();
@@ -52,6 +93,49 @@
                 event.preventDefault();
                 close();
             });
+            // end function for comment
+            // function for rating
+            $(".rating input:radio").attr("checked", false);
+
+            $('.rating input').click(function () {
+                $(".rating span").removeClass('checked');
+                $(this).parent().addClass('checked');
+            });
+
+            $('input:radio').change(
+                function () {
+                    var rate = this.value;
+                    var book = $('#book').val();
+                    var user = $('#user').val();// thực hiện lấy dữ liệu từ các input tương ứng
+                    var json = {
+                        "userId": parseInt(user),
+                        "bookId": parseInt(book),
+                        "rate": parseInt(rate)
+                    };
+                    $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        type: "POST", // method
+                        data: JSON.stringify(json),
+                        url: "/rateCreate", //link này ở RequestMapping
+                        success: function (rate) { // reponse này ở requestBody
+                            var respContent = "";
+                            respContent += "<div><span>";
+                            respContent += rate.rate + "</span></div>";
+                            $("#yourRate").append("Your rate" + respContent);
+                            // for (var i = 1; i <= rate.rate; i++) {
+                            //     $('#star' + i).attr('checked', true);
+                            // }
+                        }, error: function () {
+                            console.log(this.error);
+                        }
+                    });
+                    event.preventDefault();
+                    close();// gán các biến vào các trường tương ứng của đối tượng json.
+                });
+        //    end function for rating
         });
     </script>
     <title>Layout</title>
@@ -243,12 +327,31 @@
                 <!--                Code for comment-->
                 <h6>COMMUNITY REVIEWS</h6>
                 <hr>
+                <!--                Code for rating-->
+                <th:block th:if="${rating}">
+                    <input type="hidden" id="ratingScore" th:value="${rating}">
+                    <p th:text="${rating}"></p>
+                </th:block>
+
+                <th:block th:if="${average}">
+                    <p th:text="${average}"></p>
+                </th:block>
+                <div class="rating">
+                    <span><input type="radio" name="rating" id="str5" value="5"><label for="str5"></label></span>
+                    <span><input type="radio" name="rating" id="str4" value="4"><label for="str4"></label></span>
+                    <span><input type="radio" name="rating" id="str3" value="3"><label for="str3"></label></span>
+                    <span><input type="radio" name="rating" id="str2" value="2"><label for="str2"></label></span>
+                    <span><input type="radio" name="rating" id="str1" value="1"><label for="str1"></label></span>
+                    <p id="yourRate"></p>
+                </div>
+                <!--                End code for rating-->
+
                 <!--                Comment input field-->
                 <div class="row">
                     <div class="container form-group">
                         <form id="formComment" th:object="${comment}">
                             <input type="hidden" id="user" name="user" th:value="${user.userId}">
-                            <input type="hidden" id="book" name="hotelCurrent" th:value="${book.bookId}">
+                            <input type="hidden" id="book"  th:value="${book.bookId}">
                             <textarea class="form-control" rows="4" id="content" style="width: 100%"
                                       th:field="${comment.content}"></textarea><br>
                             <td><input type="submit" class="btn btn-success" value="Write a review"
@@ -263,7 +366,7 @@
                     <div class="container">
                         <div id="allComment">
                             <th:block th:each="comment : ${allComment}">
-                                <strong th:text="${comment.user.name}" ></strong><br>
+                                <strong th:text="${comment.user.name}"></strong><br>
                                 <div>
                                     <span th:text="${comment.content}"></span>
                                 </div>

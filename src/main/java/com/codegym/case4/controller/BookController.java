@@ -166,39 +166,9 @@ public class BookController {
         return modelAndView;
     }
 
-    // Test chức năng rate
-    @GetMapping("/rate")
-    public ModelAndView showRatingForm() {
-        ModelAndView modelAndView = new ModelAndView("/book/demoStar1");
-        return modelAndView;
-    }
-
-    @GetMapping("/rate/rating")
-    public ModelAndView getRate(@RequestParam("rating") int rating) {
-        ModelAndView modelAndView = new ModelAndView("/book/demoStar1");
-        List<Rate> rates = rateService.findRatesByBookId(1L);
-        System.out.println(rates);
-        Float average = rateService.averageRates(1L);
-        modelAndView.addObject("rating", rating);
-        modelAndView.addObject("average", average);
-        return modelAndView;
-    }
-
-    // Test chức năng comment
-    @GetMapping("/comment")
-    public ModelAndView showCommentForm(@PageableDefault(size = 10) Pageable pageable){
-        ModelAndView modelAndView = new ModelAndView("/book/demoComment");
+    public User getCurrentUser() {
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findByUsername(userPrincipal.getUsername());
-        Book book = bookService.findById(1L).get();
-        Page<Comment> allComment = commentService.findCommentByBookId(1L, pageable);
-        modelAndView.addObject("allComment",allComment);
-        modelAndView.addObject("comment",new CommentForm());
-        modelAndView.addObject("user",user);
-        modelAndView.addObject("book",book);
-
-        return modelAndView;
+        return user;
     }
-
-
 }

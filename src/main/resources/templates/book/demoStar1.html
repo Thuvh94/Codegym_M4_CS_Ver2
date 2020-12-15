@@ -91,69 +91,68 @@
         }
 
     </style>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
-<th:block th:if="${rating}">
-    <input type="hidden" id="ratingScore" th:value="${rating}">
-    <p th:text="${rating}"></p>
-</th:block>
+<!--<th:block th:if="${rating}">-->
+<!--    <input type="hidden" id="ratingScore" th:value="${rating}">-->
+<!--    <p th:text="${rating}"></p>-->
+<!--</th:block>-->
 
-<th:block th:if="${average}">
-    <p th:text="${average}"></p>
-</th:block>
+<!--<th:block th:if="${average}">-->
+<!--    <p th:text="${average}"></p>-->
+<!--</th:block>-->
 
 <div id="status"></div>
-<form id="ratingForm" action="/admin/book/rate/rating">
-    <fieldset class="rating">
-        <legend>Please rate:</legend>
+<form id="ratingForm" th:object="${rate}">
+    <input type="hidden" id="user" name="user" th:value="${user.userId}">
+    <input type="hidden" id="book" name="book" th:value="${book.bookId}">
+    <div class="rating">
         <input type="radio" id="star5" name="rating" value="5"/><label for="star5" title="Rocks!">5 stars</label>
         <input type="radio" id="star4" name="rating" value="4"/><label for="star4" title="Pretty good">4 stars</label>
         <input type="radio" id="star3" name="rating" value="3"/><label for="star3" title="Meh">3 stars</label>
         <input type="radio" id="star2" name="rating" value="2"/><label for="star2" title="Kinda bad">2 stars</label>
         <input type="radio" id="star1" name="rating" value="1"/><label for="star1" title="Sucks big time">1 star</label>
-    </fieldset>
+    </div>
     <div class="clearfix"></div>
-    <button class="submit clearfix">Submit</button>
+    <input type="submit" class="btn btn-success" value="Review"></td>
+    <p id="yourRate"></p>
 </form>
-<script>
-    // let i;
-    // for ( i = 0; i < ratingScore.value; i++) {
-    //     star(i+1).checked = true;
-    // }
-    switch (ratingScore.value) {
-        case "1":
-            star1.checked = true;
-            break;
-
-        case "2":
-            star1.checked = true;
-            star2.checked = true;
-            break;
-
-        case "3":
-            star1.checked = true;
-            star2.checked = true;
-            star3.checked = true;
-            break;
-            break;
-
-        case "4":
-            star1.checked = true;
-            star2.checked = true;
-            star3.checked = true;
-            star4.checked = true;
-            break;
-
-        case "5":
-            star1.checked = true;
-            star2.checked = true;
-            star3.checked = true;
-            star4.checked = true;
-            star5.checked = true;
-            break;
-        default:
-            break;
-    }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ratingForm').submit(function (event) { // là funtion được gọi khi submit from có id là newSmartphoneForm
+            var rate = $('.rating').val();
+            var book = $('#book').val();
+            var user = $('#user').val();// thực hiện lấy dữ liệu từ các input tương ứng
+            var json = {
+                "userId": parseInt(user),
+                "bookId": parseInt(book),
+                "rate":parseInt(rate)
+            };// gán các biến vào các trường tương ứng của đối tượng json.
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                type: "POST", // method
+                data: JSON.stringify(json),
+                url: "/rateCreate", //link này ở RequestMapping
+                success: function (rate) { // reponse này ở requestBody
+                    var respContent = "";
+                    respContent += "<div><span>";
+                    respContent += rate.rate + "</span></div>";
+                    $("#yourRate").html("Your rate"+respContent);
+                    for (var i = 1; i <= rate.rate; i++) {
+                        $('#star' + i).attr('checked', true);
+                    }
+                }, error: function () {
+                    console.log(this.error);
+                }
+            });
+            event.preventDefault();
+            close();
+        });
+    });
 </script>
 </body>
 </html>
