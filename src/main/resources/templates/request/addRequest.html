@@ -61,7 +61,7 @@
           <span th:text="${category.categoryName}"></span>
         </div>
       </td>
-      <td><p th:text="'Suggested by user:' + ${requestCategories}"></p></td>
+      <td><p style="color:blue;" th:text="'Genre suggested by user:' + ${requestCategories}"></p></td>
     </tr>
 
     <tr>
@@ -71,7 +71,7 @@
           <option th:each="author : ${allAuthors}" th:value="${author.authorId}" th:text="${author.authorName}"></option>
         </select>
       </td>
-      <td><p th:text="'Suggested by user: ' + ${requestAuthor}"></p></td>
+      <td><p style="color:blue;" th:text="'Author suggested by user: ' + ${requestAuthor}"></p></td>
     </tr>
 
     <tr>

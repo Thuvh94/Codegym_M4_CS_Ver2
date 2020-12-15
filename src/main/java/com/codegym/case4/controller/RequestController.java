@@ -25,6 +25,7 @@ import java.time.LocalDate;
 
 @Controller
 public class RequestController {
+    private final String DEFAULT_IMG = "defaultCoverImg.png";
 
     @Autowired
     IUserService userService;
@@ -86,7 +87,10 @@ public class RequestController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        request.setCoverImg(fileName);
+        if (fileName.equals(""))
+            request.setCoverImg(DEFAULT_IMG);
+        else
+            request.setCoverImg(fileName);
         System.out.println(request);
         requestService.save(request);
         return new RedirectView("/client/request/list");
@@ -150,7 +154,7 @@ public class RequestController {
     public RedirectView addRequest(@ModelAttribute BookForm bookForm, @PathVariable Long requestId) {
         MultipartFile multipartFile = bookForm.getCoverImg();
         String fileName = multipartFile.getOriginalFilename();
-        Book editedBook = new Book(bookForm.getBookId(),fileName, bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
+        Book editedBook = new Book(bookForm.getBookId(), fileName, bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
                 bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(), bookForm.getAuthorId());
         if (fileName.equals("")) {
             Request request = requestService.findById(requestId).get();

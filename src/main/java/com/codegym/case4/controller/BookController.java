@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/admin/book")
 public class BookController {
+    private final String DEFAULT_IMG = "defaultCoverImg.png";
     @Autowired
     private IBookService bookService;
 
@@ -83,8 +85,30 @@ public class BookController {
         return modelAndView;
     }
 
-    @PostMapping("/create")
-    public RedirectView saveBook(@ModelAttribute BookForm bookForm) {
+//    @PostMapping("/create")
+//    public RedirectView saveBook(@Validated @ModelAttribute("book") BookForm bookForm,BindingResult bindingResult) {
+//        if (bindingResult.hasFieldErrors()) {
+//            return new RedirectView("/admin/book/create");
+//        }
+//        Book book = new Book(bookForm.getBookId(), bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
+//                bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(), bookForm.getAuthorId());
+//        MultipartFile multipartFile = bookForm.getCoverImg();
+//        String fileName = multipartFile.getOriginalFilename();
+//        try {
+//            FileCopyUtils.copy(bookForm.getCoverImg().getBytes(), new File(this.fileUpload + fileName));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        book.setCoverImg(fileName);
+//        bookService.save(book);
+//        return new RedirectView("/admin/book");
+//    }
+@PostMapping("/create")
+    public ModelAndView saveBook(@Validated @ModelAttribute("book") BookForm bookForm,BindingResult bindingResult,@RequestParam("s") Optional<String> s, @PageableDefault(size = 10) Pageable pageable) {
+        if (bindingResult.hasFieldErrors()) {
+        ModelAndView modelAndView = new ModelAndView("/book/create");
+            return modelAndView;
+        }
         Book book = new Book(bookForm.getBookId(), bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
                 bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(), bookForm.getAuthorId());
         MultipartFile multipartFile = bookForm.getCoverImg();
@@ -94,9 +118,12 @@ public class BookController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        book.setCoverImg(fileName);
+        if(fileName.equals(""))
+            book.setCoverImg(DEFAULT_IMG);
+        else
+            book.setCoverImg(fileName);
         bookService.save(book);
-        return new RedirectView("/admin/book");
+        return listBooks(s,pageable);
     }
 
     // Delete function

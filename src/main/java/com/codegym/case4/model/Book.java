@@ -1,6 +1,8 @@
 package com.codegym.case4.model;
 
+import lombok.Builder;
 import lombok.Data;
+import net.bytebuddy.implementation.bind.annotation.Default;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

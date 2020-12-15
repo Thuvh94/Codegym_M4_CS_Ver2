@@ -27,11 +27,13 @@
 <form th:action="@{/admin/book/create}" th:object="${book}" method="post" enctype="multipart/form-data">
     <table align="center">
         <tr>
-            <td>Title:</td>
+            <td>Title:<strong style="color: red">*</strong></td>
             <td><input type="text" th:field="*{title}"/></td>
-            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</td>
         </tr>
-
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red">Title Error</td>
+        </tr>
         <tr>
             <td>Cover image:</td>
             <td><input type="file" th:field="*{coverImg}"></td>
@@ -72,10 +74,11 @@
                 </select>
             </td>
             <td>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAuthorModal">Add new author
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAuthorModal">Add new
+                    author
                 </button>
                 <!--                Code modal-->
-                <div class="modal"id="addAuthorModal" tabindex="-1" role="dialog" >
+                <div class="modal" id="addAuthorModal" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">

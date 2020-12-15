@@ -2,16 +2,13 @@ package com.codegym.case4.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Set;
-
 public class BookForm {
     private Long bookId;
     private MultipartFile coverImg;
+    @NotEmpty(message = "This field is required.")
     private String title;
     private String description;
     private boolean isDeleted;
