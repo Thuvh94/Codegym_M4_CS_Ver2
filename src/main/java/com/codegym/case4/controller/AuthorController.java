@@ -42,7 +42,7 @@ public class AuthorController {
     public ModelAndView createAuthor(Author author) {
         iAuthorService.save(author);
         ModelAndView modelAndView = new ModelAndView("author/create", "author", new Author());
-        modelAndView.addObject("message", "new author created successfully");
+        modelAndView.addObject("message", "New author created successfully");
         return modelAndView;
     }
 
@@ -53,7 +53,7 @@ public class AuthorController {
         if (author != null) {
             modelAndView.addObject("author", author);
         } else {
-            modelAndView.addObject("message", "unknown author ");
+            modelAndView.addObject("message", "Unknown author ");
         }
         return modelAndView;
     }
@@ -63,7 +63,7 @@ public class AuthorController {
         iAuthorService.save(author);
         ModelAndView modelAndView = new ModelAndView("/author/edit");
         modelAndView.addObject("author", author);
-        modelAndView.addObject("message", " author updated successfully");
+        modelAndView.addObject("message", " Author updated successfully");
         return modelAndView;
     }
 

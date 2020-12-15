@@ -23,7 +23,7 @@
 </div>
 
 <th:block th:if="${message}">
-    <p th:text="${message}" align="center"></p>
+    <p th:text="${message}" align="center" style="color: red"></p>
 </th:block>
 <form th:action="@{/admin/author/create}" th:object="${author}" method="post">
     <table align="center">
