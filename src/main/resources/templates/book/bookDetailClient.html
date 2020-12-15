@@ -326,18 +326,18 @@
                 <h6>COMMUNITY REVIEWS</h6>
                 <hr>
                 <!--                Code for rate and comment information-->
-                <div class="row" style="font-style: italic; color: gray">
+                <div class="row container" style="font-style: italic; color: gray">
                     <span th:if="${average}" th:text="'Average: ' + ${average}"></span>
-                    <span th:unless="${average}" th:text="'0 rating'  + ' · '"></span>
-                    <img th:src="@{'http://localhost:8080/starIcon.png'}" style="width: 2%;height: 2%">
+                    <span th:unless="${average}" th:text="' This Book Is Not Yet Rated '  + ' · '"></span>
+                    <img th:if="${average}" th:src="@{'http://localhost:8080/starIcon.png'}" style="width: 2%;height: 2%">
                     <span th:if="${totalRate}"  th:text=" ' · ' + ${totalRate} + ' ratings '+' · '"></span>
                     <span th:if="${totalComment}" th:text="' '+ ${totalComment} + ' reviews'"></span>
-                    <span th:unless="${totalComment}" th:text="' 0 review'"></span>
+                    <span th:unless="${totalComment}" th:text="' '+'This Book Is Not Yet Reviewed'"></span>
                 </div>
                 <!--                End Code for rate and comment information-->
 
                 <!--                Code for rating-->
-                <div class="row">
+                <div class="row container">
                     <strong th:text="${user.name}+' ,  start your review of ' + ${book.title}"></strong><br>
                     <div class="rating">
                             <span><input type="radio" name="rating" id="str5" value="5"><label
@@ -357,7 +357,7 @@
             <!--                End code for rating-->
 
             <!--                Comment input field-->
-            <div class="row">
+            <div class="row container">
                 <div class="container form-group">
                     <form id="formComment" th:object="${comment}">
                         <input type="hidden" id="user" name="user" th:value="${user.userId}">
@@ -372,7 +372,7 @@
             <!--               End comment input field-->
 
             <!--                Comment thread-->
-            <div class="row">
+            <div class="row container">
                 <div class="container">
                     <div id="allComment">
                         <th:block th:each="comment : ${allComment}">
