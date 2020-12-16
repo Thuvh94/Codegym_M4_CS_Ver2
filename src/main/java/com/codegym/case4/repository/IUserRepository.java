@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 @Repository
 public interface IUserRepository extends PagingAndSortingRepository<User, Long> {
     Page<User> findAllByIsDeletedFalse(Pageable pageable);
+    Page<User> findAllByIsDeletedTrue(Pageable pageable);
 
     @Query(value="select * from users u where u.name LIKE concat('%',:name,'%') and u.isDeleted = 0",nativeQuery = true)
     Page<User> findAllByNameContaining(@Param("name") String name, Pageable pageable);
@@ -26,4 +27,10 @@ public interface IUserRepository extends PagingAndSortingRepository<User, Long> 
 
     User findByUserName(String userName);
     User findByUserNameAndIsDeletedIsFalse(String userName);
+    User findByUserNameAndIsDeletedIsTrue(String userName);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE users u set u.isDeleted = 0 where u.userId = :id", nativeQuery = true)
+    void restore(@Param("id") Long id);
 }

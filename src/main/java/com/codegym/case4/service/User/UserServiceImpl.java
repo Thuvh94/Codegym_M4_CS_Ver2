@@ -59,4 +59,19 @@ public class UserServiceImpl implements IUserService{
     public User findByUserNameAndIsDeletedIsFalse(String userName) {
         return userRepository.findByUserNameAndIsDeletedIsFalse(userName);
     }
+
+    @Override
+    public Page<User> findAllByIsDeletedTrue(Pageable pageable) {
+        return userRepository.findAllByIsDeletedTrue(pageable);
+    }
+
+    @Override
+    public User findByUserNameAndIsDeletedIsTrue(String userName) {
+        return userRepository.findByUserNameAndIsDeletedIsTrue(userName);
+    }
+
+    @Override
+    public void restore(Long id) {
+        userRepository.restore(id);
+    }
 }

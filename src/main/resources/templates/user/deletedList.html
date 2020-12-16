@@ -10,17 +10,20 @@
 </head>
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
-<h1 align="center">Users</h1>
-<div align="center">
-    <form >Search a User:
-    <input name="s" type="text"/>
-    <input type="submit" value="Search"/>
-</form>
-</div>
+<h1 align="center">Deleted users</h1>
+<!--<div align="center">-->
+<!--    <form >Search a User:-->
+<!--        <input name="s" type="text"/>-->
+<!--        <input type="submit" value="Search"/>-->
+<!--    </form>-->
+<!--</div>-->
 
 <div align="center">
     <a href="/admin/user/create">Create new User</a>&nbsp &nbsp &nbsp &nbsp
-    <a href="/admin/user/deletedUser">View deleted user</a>
+    <a href="/admin/user">View all user</a>
+</div>
+<div align="center">
+    <h6 th:if="${message}"style="color: red;" th:text="${message}"></h6>
 </div>
 <table border="1" align="center">
     <tr>
@@ -32,8 +35,7 @@
         <th>User Name</th>
         <th>Password</th>
         <th>Roles</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th>Restore</th>
     </tr>
     <th:block th:each="user : ${users}">
         <tr>
@@ -49,8 +51,7 @@
                 <span th:text="${role.roleName}"></span><br>
                 </span>
             </td>
-            <td><a th:href="@{user/edit/__${user.userId}__ }">Edit</a></td>
-            <td><a th:href="@{user/delete/__${user.userId}__ }">Delete</a></td>
+            <td><a th:href="@{/admin/user/restore/__${user.userId}__ }">Restore</a></td>
         </tr>
     </th:block>
 </table>

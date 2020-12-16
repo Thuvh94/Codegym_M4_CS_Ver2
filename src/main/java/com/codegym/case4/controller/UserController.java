@@ -1,9 +1,6 @@
 package com.codegym.case4.controller;
 
-import com.codegym.case4.model.Author;
-import com.codegym.case4.model.Category;
-import com.codegym.case4.model.Role;
-import com.codegym.case4.model.User;
+import com.codegym.case4.model.*;
 import com.codegym.case4.service.Author.IAuthorService;
 import com.codegym.case4.service.Category.ICategoryService;
 import com.codegym.case4.service.Role.IRoleService;
@@ -57,6 +54,26 @@ public class UserController {
         modelAndView.addObject("users", users);
         return modelAndView;
     }
+
+    // View deleted user
+    @GetMapping("/deletedUser")
+    public ModelAndView listDeletedUser(@PageableDefault(size = 10) Pageable pageable) {
+        Page<User> users = userService.findAllByIsDeletedTrue(pageable);
+        ModelAndView modelAndView = new ModelAndView("/user/deletedList");
+        modelAndView.addObject("users", users);
+        return modelAndView;
+    }
+    //Restore book
+    @GetMapping("/restore/{id}")
+    public ModelAndView restoreUser(@PathVariable Long id,@PageableDefault(size = 10) Pageable pageable){
+        userService.restore(id);
+        Page<User> users =  userService.findAllByIsDeletedTrue(pageable);
+        ModelAndView modelAndView = new ModelAndView("/user/deletedList");
+        modelAndView.addObject("message","User is restored successfully");
+        modelAndView.addObject("users",users);
+        return modelAndView;
+    }
+
 
     // Create user
     @GetMapping("/create")
