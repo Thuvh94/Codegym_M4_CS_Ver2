@@ -1,9 +1,6 @@
 package com.codegym.case4.controller;
 
-import com.codegym.case4.model.Book;
-import com.codegym.case4.model.Category;
-import com.codegym.case4.model.Role;
-import com.codegym.case4.model.User;
+import com.codegym.case4.model.*;
 import com.codegym.case4.service.Book.IBookService;
 import com.codegym.case4.service.Category.ICategoryService;
 import com.codegym.case4.service.Role.IRoleService;
@@ -79,14 +76,14 @@ public class SecurityController {
     }
     @GetMapping("/create")
     public ModelAndView Signup() {
-        ModelAndView modelAndView = new ModelAndView("create");
+        ModelAndView modelAndView = new ModelAndView("signUp");
         modelAndView.addObject("user", new User());
         return modelAndView;
     }
 
     @PostMapping("/create")
     public ModelAndView saveCustomer(@Validated @ModelAttribute("user") User user, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView("create");
+        ModelAndView modelAndView = new ModelAndView("signUp");
         if (!bindingResult.hasFieldErrors()) {
             Role role = roleService.findRoleByRoleName("ROLE_USER");
             Set<Role> roles = new HashSet<>();
@@ -105,10 +102,16 @@ public class SecurityController {
         return "login";
     }
 
-    @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
-    public String logoutSuccessfulPage(Model model) {
-        model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
-    }
+//    @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
+//    public String logoutSuccessfulPage(Model model) {
+//        model.addAttribute("title", "Logout");
+//        return "logoutSuccessfulPage";
+//    }
 
+    @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
+    public ModelAndView logoutSuccessfulPage(@RequestParam("s") Optional<String> s, @PageableDefault(size = 10) Pageable pageable) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("title", "Logout");
+        return listBooks(s,pageable);
+    }
 }
