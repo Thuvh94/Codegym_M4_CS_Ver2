@@ -28,20 +28,23 @@ public class RateController {
     @Autowired
     private IRateService rateService;
 
+//    @RequestMapping(value = "/rateCreate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseBody
+//    public Rate rateComment(@RequestBody RateForm rateForm){
+//        User user= userService.findById(rateForm.getUserId()).get();
+//        Book book = bookService.findById(rateForm.getBookId()).get();
+////        Rate rate = new Rate(null,book,user,rateForm.getRate());
+//        Rate rate = new Rate(book,user,rateForm.getRate());
+//
+//        return rateService.save(rate);
+//    }
     @RequestMapping(value = "/rateCreate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Rate rateComment(@RequestBody RateForm rateForm){
+    public NewRateResponse rateComment(@RequestBody RateForm rateForm){
         User user= userService.findById(rateForm.getUserId()).get();
         Book book = bookService.findById(rateForm.getBookId()).get();
-//        Rate rate = new Rate(null,book,user,rateForm.getRate());
         Rate rate = new Rate(book,user,rateForm.getRate());
-        return rateService.save(rate);
+        rateService.save(rate);
+        return new NewRateResponse(rate, rateService.findRatesByBookId(book.getBookId()).size(),rateService.averageRates(book.getBookId()));
     }
-
-//    @RequestMapping(value = "/rateAverage", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseBody
-//    public Page<Comment> allComment(@PageableDefault(size = 10) Pageable pageable){
-//        return commentService.findAll(pageable);
-//    }
-
 }

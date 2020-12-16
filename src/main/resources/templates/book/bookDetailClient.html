@@ -83,6 +83,8 @@
                         respContent += "<div><span> ";
                         respContent += comment.content + "</span></div><br>";
                         // $("#allComment").html(respContent);
+
+                        document.getElementById("total-review").innerText = +document.getElementById("total-review").innerText+1;
                         $("#allComment").prepend(respContent);
                         $("#content").val("");
                     }, error: function () {
@@ -128,6 +130,9 @@
                             // for (var i = 1; i <= rate.rate; i++) {
                             //     $('#star' + i).attr('checked', true);
                             // }
+                            console.log(rate);
+                            document.getElementById("total-rate").innerText = rate.totalRate;
+                            document.getElementById("average-rate").innerText = "Average: " +rate.average.toFixed(2);
                         }, error: function () {
                             console.log(this.error);
                         }
@@ -327,11 +332,12 @@
                 <hr>
                 <!--                Code for rate and comment information-->
                 <div class="row container" style="font-style: italic; color: gray">
-                    <span th:if="${average}" th:text="'Average: ' + ${average}"></span>
+                    <span th:if="${average}" th:text="'Average: ' + ${average}" id="average-rate"></span>
                     <span th:unless="${average}" th:text="' This Book Is Not Yet Rated '  + ' · '"></span>
-                    <img th:if="${average}" th:src="@{'http://localhost:8080/starIcon.png'}" style="width: 2%;height: 2%">
-                    <span th:if="${totalRate}"  th:text=" ' · ' + ${totalRate} + ' ratings '+' · '"></span>
-                    <span th:if="${totalComment}" th:text="' '+ ${totalComment} + ' reviews'"></span>
+                    <img th:if="${average}"  th:src="@{'http://localhost:8080/starIcon.png'}" style="width: 2%;height: 2%">
+                    &nbsp.&nbsp <span th:if="${totalRate}" id="total-rate"  th:text=" ${totalRate}"></span> &nbsp ratings &nbsp.
+<!--                    <span th:if="${totalRate}" id="total-rate"  th:text=" ' · ' + ${totalRate} + ' ratings '+' · '"></span>-->
+                    &nbsp<span th:if="${totalComment}" id="total-review" th:text="${totalComment}"></span>&nbsp reviews
                     <span th:unless="${totalComment}" th:text="' '+'This Book Is Not Yet Reviewed'"></span>
                 </div>
                 <!--                End Code for rate and comment information-->
