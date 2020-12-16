@@ -21,8 +21,12 @@
     <input th:type="hidden" name="id" th:field="*{bookId}">
     <table align="center">
         <tr>
-            <td>Title:</td>
+            <td>Title:<strong style="color: red">*</strong></td>
             <td><input type="text" th:field="*{title}"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red">Title Error</td>
         </tr>
         <tr>
             <td>Cover image:</td>
@@ -33,8 +37,12 @@
             <td><input type="file" th:field="*{coverImg}"></td>
         </tr>
         <tr>
-            <td>Description:</td>
+            <td>Description:<strong style="color: red">*</strong></td>
             <td><textarea th:field="*{description}"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color: red">Description Error</td>
         </tr>
         <tr>
             <td>Publication date:</td>
@@ -57,9 +65,10 @@
 
         </tr>
         <tr>
-            <td>Author:</td>
+            <td>Author:<strong style="color: red">*</strong></td>
             <td>
                 <select name="authors" th:field="*{authorId}">
+                    <option selected value="">Select author</option>
                     <option th:each="author : ${allAuthors}"
                             th:value="${author.authorId}"
                             th:text="${author.authorName}"
@@ -67,6 +76,10 @@
                     </option>
                 </select>
             </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}" style="color: red">Title Error</td>
         </tr>
         <tr>
             <td></td>

@@ -168,7 +168,10 @@ public class BookController {
     }
 
     @PostMapping("/edit")
-    public ModelAndView updateBook(@ModelAttribute("book") BookForm bookForm) {
+    public ModelAndView updateBook(@Validated @ModelAttribute("book") BookForm bookForm, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+           showEditForm(bookForm.getBookId());
+        }
         MultipartFile multipartFile = bookForm.getCoverImg();
         String fileName = multipartFile.getOriginalFilename();
         Book editedBook = new Book(bookForm.getBookId(), fileName, bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
