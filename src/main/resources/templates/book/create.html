@@ -3,16 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Book</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
-            integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU"
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
+<!--          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"-->
+<!--            integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU"-->
+<!--            crossorigin="anonymous"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"-->
+<!--            integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj"-->
+<!--            crossorigin="anonymous"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"-->
+<!--            integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"-->
+<!--            crossorigin="anonymous"></script>-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
             crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"
-            integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj"
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
             crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
 </head>
 <body>
@@ -35,6 +46,25 @@
             <td th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red">Title Error</td>
         </tr>
         <tr>
+            <td>Authors:<strong style="color: red">*</strong></td>
+            <td>
+                <select th:field="*{authorId}">
+                    <option selected value="">Select author</option>
+                    <option th:each="author : ${allAuthors}" th:value="${author.authorId}"
+                            th:text="${author.authorName}"></option>
+                </select>
+            </td>
+            <td>
+                <!--                <a th:href="@{/admin/author/create}" class="btn btn-primary"><span style="color: white">Add new Author</span></a>-->
+                <!--                -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAuthorModal">Add new author</button>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}" style="color: red">Title Error</td>
+        </tr>
+        <tr>
             <td>Cover image:</td>
             <td><input type="file" th:field="*{coverImg}"></td>
         </tr>
@@ -44,7 +74,8 @@
         </tr>
         <tr>
             <td></td>
-            <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color: red">Title Error</td>
+            <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color: red">Title Error
+            </td>
         </tr>
 
         <tr>
@@ -68,63 +99,42 @@
                 </div>
             </td>
         </tr>
-         <tr>
-            <td>Authors:<strong style="color: red">*</strong></td>
-            <td>
-                <select th:field="*{authorId}">
-                    <option selected value="">Select author</option>
-                    <option th:each="author : ${allAuthors}" th:value="${author.authorId}"
-                            th:text="${author.authorName}"></option>
-                </select>
-            </td>
-            <td>
-                <a th:href="@{/admin/author/create}" class="btn btn-primary"><span style="color: white">Add new Author</span></a>
-<!--                -->
-<!--                <a class="btn btn-success"
-                                                           th:href="@{/client/book/viewDetail/__${book.bookId}__}"><span
-                                                                style="color: white">View</span></a>-->
-<!--                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAuthorModal">Add new-->
-<!--                    author-->
-<!--                </button>-->
-                <!--                Code modal-->
-<!--                <div class="modal" id="addAuthorModal" tabindex="-1" role="dialog">-->
-<!--                    <div class="modal-dialog" role="document">-->
-<!--                        <div class="modal-content">-->
-<!--                            <div class="modal-header">-->
-<!--                                <h5 class="modal-title">Add new author</h5>-->
-<!--                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-<!--                                    <span aria-hidden="true">&times;</span>-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                            <div class="modal-body">-->
-<!--                                <form action="">-->
-<!--                                    <p>Author name: </p>-->
-<!--                                    <input type="text">-->
-<!--                                    <p>Author description: </p>-->
-<!--                                    <input type="text">-->
-<!--                                    <div class="modal-footer">-->
-<!--                                        <button type="button" class="btn btn-primary">Add author</button>-->
-<!--                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close-->
-<!--                                        </button>-->
-<!--                                    </div>-->
-<!--                                </form>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-                <!--                -->
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}" style="color: red">Title Error</td>
-        </tr>
         <tr>
             <td></td>
             <td><input type="submit" value="Create book"></td>
         </tr>
     </table>
 </form>
+<!--                Code modal-->
+<div class="modal" id="addAuthorModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add new author</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+<!--                <form action="/admin/author/create" method="post">-->
+                <form name='f' th:action="@{/admin/author/create}"  th:object="${author}" method='POST'>
+                    <p>Author name: <strong style="color: red">*</strong></p>
+                    <input type="text" th:field="*{authorName}">
+                    <span th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}" style="color: red">Title Error</span>
+
+                    <p>Author description: </p>
+                    <input type="text" th:field="*{authorDesc}">
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Add author</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--   End code modal             -->
 <div th:replace="adminLayout :: adminFooter"></div>
 </body>
 </html>

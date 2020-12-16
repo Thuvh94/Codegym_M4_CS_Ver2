@@ -81,20 +81,6 @@ public class BookControllerClient {
             return modelAndView;
         }
     }
-//    @GetMapping("/rate")
-//    public ModelAndView getRate() {
-//        ModelAndView modelAndView = new ModelAndView("/book/demoStar3");
-//        User user = getCurrentUser();
-//        List<Rate> rates = rateService.findRatesByBookId(1L);
-//        Book book = bookService.findById(1L).get();
-//        Float average = rateService.averageRates(1L);
-//        modelAndView.addObject("rate", new RateForm());
-//        modelAndView.addObject("average", average);
-//        modelAndView.addObject("user", user);
-//        modelAndView.addObject("book",book);
-//        modelAndView.addObject("allRates", rates);
-//        return modelAndView;
-//    }
 
     public User getCurrentUser() {
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -82,27 +82,10 @@ public class BookController {
     public ModelAndView showCreateForm() {
         ModelAndView modelAndView = new ModelAndView("/book/create");
         modelAndView.addObject("book", new BookForm());
+        modelAndView.addObject("author",new Author());
         return modelAndView;
     }
 
-//    @PostMapping("/create")
-//    public RedirectView saveBook(@Validated @ModelAttribute("book") BookForm bookForm,BindingResult bindingResult) {
-//        if (bindingResult.hasFieldErrors()) {
-//            return new RedirectView("/admin/book/create");
-//        }
-//        Book book = new Book(bookForm.getBookId(), bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
-//                bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(), bookForm.getAuthorId());
-//        MultipartFile multipartFile = bookForm.getCoverImg();
-//        String fileName = multipartFile.getOriginalFilename();
-//        try {
-//            FileCopyUtils.copy(bookForm.getCoverImg().getBytes(), new File(this.fileUpload + fileName));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        book.setCoverImg(fileName);
-//        bookService.save(book);
-//        return new RedirectView("/admin/book");
-//    }
 @PostMapping("/create")
     public ModelAndView saveBook(@Validated @ModelAttribute("book") BookForm bookForm,BindingResult bindingResult,@RequestParam("s") Optional<String> s, @PageableDefault(size = 10) Pageable pageable) {
         if (bindingResult.hasFieldErrors()) {
@@ -159,6 +142,7 @@ public class BookController {
             modelAndView.addObject("selectedCategories", book.getCategories());
             modelAndView.addObject("coverImgLink", book.getCoverImg());
             modelAndView.addObject("book", bookForm);
+            modelAndView.addObject("author",new Author());
             return modelAndView;
 
         } else {

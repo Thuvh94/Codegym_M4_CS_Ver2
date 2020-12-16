@@ -17,42 +17,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .rating {
-            float: left;
-            width: 300px;
+            float:left;
+            width:300px;
         }
-
-        .rating span {
-            float: right;
-            position: relative;
-        }
-
+        .rating span { float:right; position:relative; }
         .rating span input {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            opacity: 0;
+            position:absolute;
+            top:0px;
+            left:0px;
+            opacity:0;
         }
-
         .rating span label {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            text-align: center;
-            color: #FFF;
-            background: #ccc;
-            font-size: 30px;
-            margin-right: 2px;
-            line-height: 30px;
-            border-radius: 50%;
-            -webkit-border-radius: 50%;
+            display:inline-block;
+            width:30px;
+            height:30px;
+            text-align:center;
+            color:#ccc;
+            background:#FFF;
+            font-size:30px;
+            margin-right:2px;
+            line-height:30px;
         }
-
         .rating span:hover ~ span label,
         .rating span:hover label,
         .rating span.checked label,
         .rating span.checked ~ span label {
-            background: #F90;
-            color: #FFF;
+            background:#FFF;
+            color:#F90;
         }
     </style>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -123,13 +114,6 @@
                         data: JSON.stringify(json),
                         url: "/rateCreate", //link này ở RequestMapping
                         success: function (rate) { // reponse này ở requestBody
-                            // var respContent = "";
-                            // respContent += "<div><span>";
-                            // respContent += rate.rate + "</span></div>";
-                            // $("#yourRate").html("Thank you for your rating!");
-                            // for (var i = 1; i <= rate.rate; i++) {
-                            //     $('#star' + i).attr('checked', true);
-                            // }
                             console.log(rate);
                             document.getElementById("total-rate").innerText = rate.totalRate;
                             document.getElementById("average-rate").innerText = "Average: " +rate.average.toFixed(2);
@@ -346,16 +330,11 @@
                 <div class="row container">
                     <strong th:text="${user.name}+' ,  start your review of ' + ${book.title}"></strong><br>
                     <div class="rating">
-                            <span><input type="radio" name="rating" id="str5" value="5"><label
-                                    for="str5"></label></span>
-                        <span><input type="radio" name="rating" id="str4" value="4"><label
-                                for="str4"></label></span>
-                        <span><input type="radio" name="rating" id="str3" value="3"><label
-                                for="str3"></label></span>
-                        <span><input type="radio" name="rating" id="str2" value="2"><label
-                                for="str2"></label></span>
-                        <span><input type="radio" name="rating" id="str1" value="1"><label
-                                for="str1"></label></span>
+                        <span><input type="radio" name="rating" id="str5" value="5"><label for="str5"><span class="fa fa-star"></span></label></span>
+                        <span><input type="radio" name="rating" id="str4" value="4"><label for="str4"><span class="fa fa-star"></span></label></span>
+                        <span><input type="radio" name="rating" id="str3" value="3"><label for="str3"><span class="fa fa-star"></span></label></span>
+                        <span><input type="radio" name="rating" id="str2" value="2"><label for="str2"><span class="fa fa-star"></span></label></span>
+                        <span><input type="radio" name="rating" id="str1" value="1"><label for="str1"><span class="fa fa-star"></span></label></span>
                     </div>
                 </div>
             </div>
