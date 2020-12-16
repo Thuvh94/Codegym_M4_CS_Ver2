@@ -17,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/admin/author")
 public class AuthorController {
     @Autowired
     private IAuthorService iAuthorService;
@@ -33,14 +32,14 @@ public class AuthorController {
         return modelAndView;
     }
 
-    @GetMapping("/create")
+    @GetMapping("/admin/author/create")
     public ModelAndView showCreateForm() {
         ModelAndView modelAndView = new ModelAndView("author/create");
         modelAndView.addObject("author", new Author());
         return modelAndView;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/admin/author/create")
     public ModelAndView createAuthor(@Validated @ModelAttribute("author") Author author, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             ModelAndView modelAndView = new ModelAndView("author/create");
@@ -52,7 +51,7 @@ public class AuthorController {
         return modelAndView;
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/admin/author/{id}/edit")
     public ModelAndView editAuthor(@PathVariable Long id) {
         Optional<Author> author = iAuthorService.findById(id);
         ModelAndView modelAndView = new ModelAndView("author/edit");
@@ -64,7 +63,7 @@ public class AuthorController {
         return modelAndView;
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/admin/author/edit")
     public ModelAndView updateAuthor(@Validated @ModelAttribute("author") Author author, BindingResult bindingResult) {
         if (bindingResult.hasFieldErrors()) {
             return editAuthor(author.getAuthorId());
@@ -76,7 +75,7 @@ public class AuthorController {
         return modelAndView;
     }
 
-    @GetMapping("/{id}/delete")
+    @GetMapping("/admin/author/{id}/delete")
     public ModelAndView deleteAuthor(@PathVariable Long id,@PageableDefault(size = 10) Pageable pageable) {
         iAuthorService.remove(id);
         Page<Author> authors = iAuthorService.findAll(pageable);
@@ -86,7 +85,7 @@ public class AuthorController {
 
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/admin/author/{id}")
     public ModelAndView authorDetail(@PathVariable Long id,@PageableDefault(size = 10) Pageable pageable){
         Page<Book> books = bookService.findAllByAuthorId(id, pageable);
         Author author = iAuthorService.findById(id).get();
@@ -94,5 +93,22 @@ public class AuthorController {
         modelAndView.addObject("books",books);
         modelAndView.addObject("author",author);
         return  modelAndView;
+    }
+
+    @GetMapping("/client/author/{id}")
+    public ModelAndView authorDetailC(@PathVariable Long id,@PageableDefault(size = 10) Pageable pageable){
+        Page<Book> books = bookService.findAllByAuthorId(id, pageable);
+        Author author = iAuthorService.findById(id).get();
+        ModelAndView modelAndView = new ModelAndView("/author/detailClient");
+        modelAndView.addObject("books",books);
+        modelAndView.addObject("author",author);
+        return  modelAndView;
+    }
+    @GetMapping("/client/author")
+    public ModelAndView listAuthorC(@PageableDefault(size = 10) Pageable pageable) {
+        Page<Author> authors = iAuthorService.findAll(pageable);
+        ModelAndView modelAndView = new ModelAndView("author/listClient");
+        modelAndView.addObject("authors", authors);
+        return modelAndView;
     }
 }
