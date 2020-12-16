@@ -21,7 +21,7 @@ public class RateServiceImpl implements IRateService{
     @Override
     public Rate save(Rate rate) {
         Optional<Rate> checkRate = findRateByUserAndBook(rate.getBookId().getBookId(),rate.getUserId().getUserId());
-        if(checkRate!=null){
+        if(checkRate.isPresent()){
             rate.setId(checkRate.get().getId());
         }
         return rateRepository.save(rate);

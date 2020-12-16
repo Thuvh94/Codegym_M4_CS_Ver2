@@ -33,7 +33,8 @@ public class RateController {
     public Rate rateComment(@RequestBody RateForm rateForm){
         User user= userService.findById(rateForm.getUserId()).get();
         Book book = bookService.findById(rateForm.getBookId()).get();
-        Rate rate = new Rate(null,book,user,rateForm.getRate());
+//        Rate rate = new Rate(null,book,user,rateForm.getRate());
+        Rate rate = new Rate(book,user,rateForm.getRate());
         return rateService.save(rate);
     }
 
