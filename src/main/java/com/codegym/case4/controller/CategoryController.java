@@ -62,7 +62,10 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/category/edit")
-    public ModelAndView updateCategory(@ModelAttribute Category category) {
+    public ModelAndView updateCategory(@Validated @ModelAttribute("category") Category category,BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return showEditForm(category.getCategoryId());
+        }
         categoryService.save(category);
         ModelAndView modelAndView = new ModelAndView("category/edit");
         modelAndView.addObject("category", new Category());

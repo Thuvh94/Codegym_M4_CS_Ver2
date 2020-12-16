@@ -24,8 +24,12 @@
             <td><input th:field="*{categoryId}" hidden="hidden"/></td>
         </tr>
         <tr>
-            <td>CategoryName</td>
+            <td>CategoryName<strong style="color: red">*</strong></td>
             <td><input type="text" th:field="*{categoryName}" size="20"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}" style="color: red">Title Error</td>
         </tr>
         <td></td>
         <td><input type="submit" value="Update"></td>
