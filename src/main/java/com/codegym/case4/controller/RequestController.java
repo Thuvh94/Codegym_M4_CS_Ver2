@@ -14,6 +14,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -74,7 +76,11 @@ public class RequestController {
     }
 
     @PostMapping("/client/request/create")
-    public RedirectView saveRequest(@ModelAttribute("requestForm") RequestForm requestForm) {
+    public ModelAndView saveRequest(@Validated @ModelAttribute("requestForm") RequestForm requestForm, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            ModelAndView modelAndView = new ModelAndView("/request/create");
+            return modelAndView;
+        }
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findByUsername(userPrincipal.getUsername());
         Request request = new Request(requestForm.getRequestId(), user, requestForm.getTitle(),
@@ -93,7 +99,7 @@ public class RequestController {
             request.setCoverImg(fileName);
         System.out.println(request);
         requestService.save(request);
-        return new RedirectView("/client/request/list");
+        return showCreateForm();
     }
 
     @GetMapping("/admin/request")

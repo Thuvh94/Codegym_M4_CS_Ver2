@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotEmpty;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Set;
@@ -12,12 +13,16 @@ import java.util.Set;
 public class RequestForm {
     private Long requestId;
     private User userId;
+    @NotEmpty(message = "This field is required.")
     private String title;
     private MultipartFile coverImg;
+    @NotEmpty(message = "This field is required.")
     private String description;
     private long publishedDate;
     private int pages;
+    @NotEmpty(message = "This field is required.")
     private String categories;
+    @NotEmpty(message = "This field is required.")
     private String author;
     private int requestStatus;
     private LocalDate createdAt;
