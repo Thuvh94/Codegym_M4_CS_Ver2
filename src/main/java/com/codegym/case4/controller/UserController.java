@@ -12,13 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin/user")
@@ -28,6 +31,9 @@ public class UserController {
 
     @Autowired
     private IRoleService roleService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @ModelAttribute("allRoles")
     private Iterable<Role> allRoles(){
@@ -66,6 +72,9 @@ public class UserController {
             ModelAndView modelAndView = new ModelAndView("/user/create");
             return modelAndView;
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if(user.getRoles().isEmpty())
+            user.setRoles(defaultRole());
         userService.save(user);
         ModelAndView modelAndView = new ModelAndView("/user/create");
         modelAndView.addObject("user", user);
@@ -102,7 +111,6 @@ public class UserController {
         if(editedUser != null) {
             User user = editedUser.get();
             ModelAndView modelAndView = new ModelAndView("/user/edit");
-//            modelAndView.addObject("selectedCategories",user.getCategories());
             modelAndView.addObject("user", user);
             return modelAndView;
 
@@ -112,7 +120,13 @@ public class UserController {
         }
     }
     @PostMapping("/edit")
-    public ModelAndView updateUser(@ModelAttribute("user") User user){
+    public ModelAndView updateUser(@Validated @ModelAttribute("user") User user,BindingResult bindingResult){
+        if(bindingResult.hasFieldErrors()){
+            showEditForm(user.getUserId());
+        }
+        if(user.getRoles().isEmpty())
+            user.setRoles(defaultRole());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
         ModelAndView modelAndView = new ModelAndView("/user/edit");
         modelAndView.addObject("user", user);
@@ -120,5 +134,10 @@ public class UserController {
         return modelAndView;
     }
 
+    public Set<Role> defaultRole(){
+        Set<Role> roleSet = new HashSet<Role>();
+        roleSet.add(roleService.findById(1L).get());
+        return roleSet;
+    }
 
 }

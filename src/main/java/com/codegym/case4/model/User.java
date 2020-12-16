@@ -15,16 +15,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-    @NotEmpty
+    @NotEmpty(message = "This field is required.")
     private String name;
-    @Email
+    @Email(message = "Invalid email address.")
+    @NotEmpty(message = "This field is required.")
     private String mail;
     private int age;
-    @NotEmpty
     private String phone;
-    @NotEmpty
+    @NotEmpty(message = "This field is required.")
     private String userName;
-    @NotEmpty
+    @NotEmpty(message = "This field is required.")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

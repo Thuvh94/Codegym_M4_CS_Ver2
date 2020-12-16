@@ -21,12 +21,20 @@
     <input th:type="hidden" name="id" th:field="*{userId}">
     <table align="center">
         <tr>
-            <td>Name:</td>
+            <td>Name:<strong style="color: red">*</strong></td>
             <td><input type="text" th:field="*{name}"/></td>
         </tr>
         <tr>
-            <td>Email:</td>
+            <td></td>
+            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red">Name Error</td>
+        </tr>
+        <tr>
+            <td>Email:<strong style="color: red">*</strong></td>
             <td><input type="text" th:field="*{mail}"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" style="color: red">Mail Error</td>
         </tr>
         <tr>
             <td>Age:</td>
@@ -37,12 +45,20 @@
             <td><input type="text" th:field="*{phone}"/></td>
         </tr>
         <tr>
-            <td>Username:</td>
+            <td>Username:<strong style="color: red">*</strong></td>
             <td><input type="text" th:field="*{userName}"/></td>
         </tr>
         <tr>
-            <td>Password:</td>
+            <td></td>
+            <td th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" style="color: red">Username Error</td>
+        </tr>
+        <tr>
+            <td>Password:<strong style="color: red">*</strong></td>
             <td><input type="text" th:field="*{password}"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color: red">Password Error</td>
         </tr>
         <tr>
             <td>Role:</td>
