@@ -5,10 +5,14 @@ import com.codegym.case4.model.Category;
 import com.codegym.case4.service.Book.IBookService;
 import com.codegym.case4.service.Category.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,10 +42,14 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/category/create")
-    public ModelAndView createCategory(Category category) {
+    public ModelAndView createCategory(@Validated @ModelAttribute("category") Category category, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            ModelAndView modelAndView = new ModelAndView("category/create");
+            return modelAndView;
+        }
         categoryService.save(category);
         ModelAndView modelAndView = new ModelAndView("category/create", "category", new Category());
-        modelAndView.addObject("message", "new category created successfully");
+        modelAndView.addObject("message", "New category created successfully");
         return modelAndView;
     }
 
@@ -58,7 +66,7 @@ public class CategoryController {
         categoryService.save(category);
         ModelAndView modelAndView = new ModelAndView("category/edit");
         modelAndView.addObject("category", new Category());
-        modelAndView.addObject("message", "Updated Category successful!!!");
+        modelAndView.addObject("message", "Updated Category successful!");
         return modelAndView;
     }
 

@@ -30,8 +30,12 @@
 <form th:action="@{/admin/category/create}" th:object="${category}" method="post">
     <table align="center">
         <tr>
-            <th>CategoryName</th>
+            <th>CategoryName<strong style="color: red">*</strong></th>
             <td><input type="text" th:field="*{categoryName}" size="20"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}" style="color: red">Title Error</td>
         </tr>
         <tr>
             <td colspan="2" align="center"><input type="submit" value="Create"></td>

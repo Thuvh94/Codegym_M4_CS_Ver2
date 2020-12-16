@@ -13,7 +13,7 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long authorId;
 
-    @NotEmpty
+    @NotEmpty(message = "This field is required.")
     private String authorName;
 
     private String authorDesc;
