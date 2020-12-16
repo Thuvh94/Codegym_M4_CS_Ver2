@@ -17,13 +17,17 @@ import java.util.List;
 @Repository
 public interface IBookRepository extends PagingAndSortingRepository<Book,Long> {
     Page<Book> findAllByIsDeletedFalse(Pageable pageable);
+    Page<Book> findAllByIsDeletedTrue(Pageable pageable);
 
     @Query (value="select * from books b where b.title LIKE concat('%',:title,'%') and b.isDeleted = 0",nativeQuery = true)
     Page<Book> findAllByTitleContaining(@Param("title") String title, Pageable pageable);
 
+    @Query (value="select * from books b where b.title LIKE concat('%',:title,'%') and b.isDeleted = 1",nativeQuery = true)
+    Page<Book> findAllByTitleContainingAndDeletedTrue(@Param("title") String title, Pageable pageable);
+
     @Transactional
     @Modifying
-    @Query(value = "UPDATE books b set isDeleted =1 where b.bookId = :id", nativeQuery = true)
+    @Query(value = "UPDATE books b set b.isDeleted =1 where b.bookId = :id", nativeQuery = true)
     void remove(@Param("id") Long id);
 
     @Query(value="select * from books books where books.bookId in (SELECT Book_bookId FROM books_categories bc where bc.categories =:id) and isDeleted = 0",nativeQuery = true)
@@ -31,5 +35,10 @@ public interface IBookRepository extends PagingAndSortingRepository<Book,Long> {
 
     @Query(value = "select * from books books where books.authorId =:id and books.isDeleted = 0",nativeQuery = true)
     Page<Book> findAllByAuthorId(@Param("id") Long id, Pageable pageable);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE books b set b.isDeleted = 0 where b.bookId = :id", nativeQuery = true)
+    void restore(@Param("id") Long id);
 
 }

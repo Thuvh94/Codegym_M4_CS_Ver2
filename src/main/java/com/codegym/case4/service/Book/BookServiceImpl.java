@@ -52,4 +52,19 @@ public class BookServiceImpl implements IBookService {
     public Page<Book> findAllByAuthorId(Long id, Pageable pageable) {
         return bookRepository.findAllByAuthorId(id, pageable);
     }
+
+    @Override
+    public Page<Book> findAllByIsDeletedTrue(Pageable pageable) {
+        return bookRepository.findAllByIsDeletedTrue(pageable);
+    }
+
+    @Override
+    public Page<Book> findAllByTitleContainingAndDeletedIsTrue(String title, Pageable pageable) {
+        return bookRepository.findAllByTitleContainingAndDeletedTrue(title,pageable);
+    }
+
+    @Override
+    public void restore(Long bookId) {
+        bookRepository.restore(bookId);
+    }
 }

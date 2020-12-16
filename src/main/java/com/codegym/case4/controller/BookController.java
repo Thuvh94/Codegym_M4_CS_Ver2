@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -74,6 +75,35 @@ public class BookController {
         }
         ModelAndView modelAndView = new ModelAndView("/book/list");
         modelAndView.addObject("books", books);
+        return modelAndView;
+    }
+// View deleted book
+    @GetMapping("/deletedBook")
+    public ModelAndView listDeletedBooks(@RequestParam("s") Optional<String> s,@PageableDefault(size = 10) Pageable pageable) {
+        Page<Book> books;
+        if (s.isPresent()) {
+            books = bookService.findAllByTitleContainingAndDeletedIsTrue(s.get(),pageable);
+        } else {
+            books = bookService.findAllByIsDeletedTrue(pageable);
+        }
+        ModelAndView modelAndView = new ModelAndView("/book/deletedList");
+        modelAndView.addObject("books", books);
+        return modelAndView;
+    }
+
+    //Restore book
+    @GetMapping("/restore/{id}")
+    public ModelAndView restoreBook(@RequestParam("s") Optional<String> s,@PathVariable Long id,@PageableDefault(size = 10) Pageable pageable){
+        bookService.restore(id);
+        Page<Book> books;
+        if (s.isPresent()) {
+            books = bookService.findAllByTitleContainingAndDeletedIsTrue(s.get(),pageable);
+        } else {
+            books = bookService.findAllByIsDeletedTrue(pageable);
+        }
+        ModelAndView modelAndView = new ModelAndView("/book/deletedList");
+        modelAndView.addObject("message","Book is restored successfully");
+        modelAndView.addObject("books",books);
         return modelAndView;
     }
 

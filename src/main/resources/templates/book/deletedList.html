@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Book list</title>
+    <title>Deleted book list</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
@@ -18,7 +18,7 @@
 <body>
 <div th:replace="adminLayout :: adminNavbar"></div>
 
-<h1 align="center">Books</h1>
+<h1 align="center">Deleted books</h1>
 <div align="center">
     <form>
         Search by title:
@@ -28,7 +28,10 @@
 </div>
 <div align="center">
     <a href="/admin/book/create">Create new book</a> &nbsp &nbsp &nbsp &nbsp
-    <a href="/admin/book/deletedBook"> View deleted book</a>
+    <a href="/admin/book"> View all book</a>
+</div>
+<div align="center">
+    <h6 th:if="${message}"style="color: red;" th:text="${message}"></h6>
 </div>
 <table border="1" align="center">
     <tr>
@@ -40,14 +43,13 @@
         <th>Published Date</th>
         <th>Pages</th>
         <th>Category</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <th>Restore</th>
     </tr>
     <th:block th:each="book : ${books}">
         <tr>
             <td th:text="${book.bookId}"></td>
-            <td><a  th:text="${book.title}" th:href="@{/admin/book/__${book.bookId}__}"></a></td>
-            <td><a  th:text="${book.authorId.authorName}" th:href="@{/admin/author/__${book.authorId.authorId}__}"></a></td>
+            <td><span  th:text="${book.title}" ></span></td>
+            <td><span  th:text="${book.authorId.authorName}" ></span></td>
             <td>
                 <img th:src="@{'http://localhost:8080/' + ${book.coverImg}}" style="height: 200px;width: 150px">
             </td>
@@ -56,19 +58,18 @@
             <td th:text="${book.pages}"></td>
             <td>
                     <span th:each="category : ${book.categories}">
-                        <a th:text="${category.categoryName}" th:href="@{/admin/category/__${category.categoryId}__}"></a><br>
+                        <span th:text="${category.categoryName}"></span><br>
                     </span>
             </td>
-            <td><a th:href="@{/admin/book/edit/__${book.bookId}__ }">Edit</a></td>
-            <td><a th:href="@{/admin/book/delete/__${book.bookId}__ }">Delete</a></td>
+            <td><a th:href="@{/admin/book/restore/__${book.bookId}__ }">Restore</a></td>
         </tr>
     </th:block>
 </table>
-<div>
-    <a th:href="@{'/book'(page=${books.number - 1})}" th:if="${books.hasPrevious()}">Previous</a>
-    <span th:text="${books.number + 1}"></span>/<span th:text="${books.totalPages}"></span>
-    <a th:href="@{'/book'(page=${books.number + 1})}" th:if="${books.hasNext()}">Next</a>
-</div>
+<!--<div>-->
+<!--    <a th:href="@{'/book/deletedBook'(page=${books.number - 1})}" th:if="${books.hasPrevious()}">Previous</a>-->
+<!--    <span th:text="${books.number + 1}"></span>/<span th:text="${books.totalPages}"></span>-->
+<!--    <a th:href="@{'/book/deletedBook'(page=${books.number + 1})}" th:if="${books.hasNext()}">Next</a>-->
+<!--</div>-->
 <div th:replace="adminLayout :: adminFooter"></div>
 </body>
 </html>
