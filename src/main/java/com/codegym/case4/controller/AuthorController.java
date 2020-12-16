@@ -2,8 +2,10 @@ package com.codegym.case4.controller;
 
 import com.codegym.case4.model.Author;
 import com.codegym.case4.model.Book;
+import com.codegym.case4.model.Category;
 import com.codegym.case4.service.Author.IAuthorService;
 import com.codegym.case4.service.Book.IBookService;
+import com.codegym.case4.service.Category.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,14 @@ public class AuthorController {
 
     @Autowired
     private IBookService bookService;
+
+    @Autowired
+    private ICategoryService categoryService;
+
+    @ModelAttribute("allCategories")
+    public Iterable<Category> getAllCategories() {
+        return categoryService.findAll();
+    }
 
     @GetMapping
     public ModelAndView listAuthor(@PageableDefault(size = 10) Pageable pageable) {
