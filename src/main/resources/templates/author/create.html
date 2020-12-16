@@ -28,8 +28,12 @@
 <form th:action="@{/admin/author/create}" th:object="${author}" method="post">
     <table align="center">
         <tr>
-            <th>Author name</th>
+            <th>Author name<strong style="color: red">*</strong></th>
             <td><input type="text" th:field="*{authorName}" size="20"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}" style="color: red">Title Error</td>
         </tr>
         <tr>
             <th>Author description</th>

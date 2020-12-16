@@ -31,8 +31,12 @@
             <td><input th:field="*{authorId}" hidden="hidden"/></td>
         </tr>
         <tr>
-            <td>AuthorName</td>
+            <td>AuthorName<strong style="color: red">*</strong></td>
             <td><input type="text" th:field="*{authorName}" size="20"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}" style="color: red">Title Error</td>
         </tr>
         <tr>
             <td>AuthorDesc</td>

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,7 +41,11 @@ public class AuthorController {
     }
 
     @PostMapping("/create")
-    public ModelAndView createAuthor(Author author) {
+    public ModelAndView createAuthor(@Validated @ModelAttribute("author") Author author, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            ModelAndView modelAndView = new ModelAndView("author/create");
+            return modelAndView;
+        }
         iAuthorService.save(author);
         ModelAndView modelAndView = new ModelAndView("author/create", "author", new Author());
         modelAndView.addObject("message", "New author created successfully");
@@ -59,7 +65,10 @@ public class AuthorController {
     }
 
     @PostMapping("/edit")
-    public ModelAndView updateAuthor(@ModelAttribute("author") Author author) {
+    public ModelAndView updateAuthor(@Validated @ModelAttribute("author") Author author, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return editAuthor(author.getAuthorId());
+        }
         iAuthorService.save(author);
         ModelAndView modelAndView = new ModelAndView("/author/edit");
         modelAndView.addObject("author", author);
