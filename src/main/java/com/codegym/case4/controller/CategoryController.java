@@ -5,12 +5,10 @@ import com.codegym.case4.model.Category;
 import com.codegym.case4.service.Book.IBookService;
 import com.codegym.case4.service.Category.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +20,11 @@ import java.util.Optional;
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;
+
+    @ModelAttribute("allCategories")
+    public Iterable<Category> getAllCategories() {
+        return categoryService.findAll();
+    }
 
     @Autowired
     private IBookService bookService;
@@ -87,6 +90,16 @@ public class CategoryController {
         Category category = categoryService.findById(id).get();
         Page<Book> books =  bookService.findAllByCategories(id,pageable);
         ModelAndView modelAndView = new ModelAndView("/category/detail");
+        modelAndView.addObject("books",books);
+        modelAndView.addObject("category",category);
+        return  modelAndView;
+    }
+
+    @GetMapping("/client/category/{id}")
+    public ModelAndView findBooksByCategoryIdC(@PathVariable Long id,@PageableDefault(size = 10) Pageable pageable){
+        Category category = categoryService.findById(id).get();
+        Page<Book> books =  bookService.findAllByCategories(id,pageable);
+        ModelAndView modelAndView = new ModelAndView("/category/detailClient");
         modelAndView.addObject("books",books);
         modelAndView.addObject("category",category);
         return  modelAndView;
