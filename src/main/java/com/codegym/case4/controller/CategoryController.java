@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -76,11 +77,17 @@ public class CategoryController {
         return modelAndView;
     }
 
-    @GetMapping("/admin/category/{id}/delete")
+    @GetMapping("/admin/category/delete/{id}")
     public ModelAndView deleteAuthor(@PathVariable Long id) {
-        categoryService.remove(id);
-        Iterable<Category> categories = categoryService.findAll();
         ModelAndView modelAndView = new ModelAndView("category/list");
+        List<Long> categoriesHaveBook = categoryService.findAllCategoriesHaveBook();
+        if(categoriesHaveBook.contains(id)){
+            modelAndView.addObject("alert","Operation not permitted!");
+        }
+        else {
+            categoryService.remove(id);
+        }
+        Iterable<Category> categories = categoryService.findAll();
         modelAndView.addObject("categorys", categories);
         return modelAndView;
     }

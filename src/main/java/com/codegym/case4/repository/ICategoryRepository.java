@@ -11,7 +11,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Repository
 public interface ICategoryRepository extends PagingAndSortingRepository<Category,Long> {
+    @Query(value= "SELECT categories from books_categories group by categories",nativeQuery = true)
+    List<Long> findAllCategoriesHaveBook();
+
 
 }

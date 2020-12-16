@@ -93,7 +93,7 @@ public class AuthorController {
         System.out.println(authorsHaveBook);
         System.out.println(id);
         if(authorsHaveBook.contains(id)){
-            modelAndView.addObject("alert","Operation not permitted.");
+            modelAndView.addObject("alert","Operation not permitted!");
         }
         else {
             iAuthorService.remove(id);
