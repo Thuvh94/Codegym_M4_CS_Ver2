@@ -14,9 +14,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -27,7 +28,6 @@ import java.time.LocalDate;
 
 @Controller
 public class RequestController {
-    private final String DEFAULT_IMG = "defaultCoverImg.png";
 
     @Autowired
     IUserService userService;
@@ -75,12 +75,31 @@ public class RequestController {
         return modelAndView;
     }
 
+//    @PostMapping("/client/request/create")
+//    public RedirectView saveRequest(@ModelAttribute("requestForm") RequestForm requestForm) {
+//        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User user = userService.findByUsername(userPrincipal.getUsername());
+//        Request request = new Request(requestForm.getRequestId(), user, requestForm.getTitle(),
+//                null, requestForm.getDescription(), requestForm.getPublishedDate(), requestForm.getPages(), requestForm.getCategories(),
+//                requestForm.getAuthor(), requestForm.getRequestStatus(), LocalDate.now());
+//        MultipartFile multipartFile = requestForm.getCoverImg();
+//        String fileName = multipartFile.getOriginalFilename();
+//        try {
+//            FileCopyUtils.copy(requestForm.getCoverImg().getBytes(), new File(this.fileUpload + fileName));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        request.setCoverImg(fileName);
+//        System.out.println(request);
+//        requestService.save(request);
+//
+//        return new RedirectView("/client/request/create");
+//    }
+
     @PostMapping("/client/request/create")
-    public ModelAndView saveRequest(@Validated @ModelAttribute("requestForm") RequestForm requestForm, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors()) {
-            ModelAndView modelAndView = new ModelAndView("/request/create");
-            return modelAndView;
-        }
+    public ModelAndView saveRequest(@ModelAttribute("requestForm") RequestForm requestForm) {
+        ModelAndView modelAndView = new ModelAndView("/request/listClient");
+        modelAndView.addObject("message", "New request created successfully");
         UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findByUsername(userPrincipal.getUsername());
         Request request = new Request(requestForm.getRequestId(), user, requestForm.getTitle(),
@@ -93,13 +112,11 @@ public class RequestController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (fileName.equals(""))
-            request.setCoverImg(DEFAULT_IMG);
-        else
-            request.setCoverImg(fileName);
+        request.setCoverImg(fileName);
         System.out.println(request);
         requestService.save(request);
-        return showCreateForm();
+        modelAndView.addObject("requestForm",new RequestForm());
+        return modelAndView;
     }
 
     @GetMapping("/admin/request")
@@ -156,11 +173,11 @@ public class RequestController {
         return modelAndView;
     }
 
-    @PostMapping("/admin/request/addBook/{requestId}")
-    public RedirectView addRequest(@ModelAttribute BookForm bookForm, @PathVariable Long requestId) {
+    @PostMapping("/admin/request/addBook")
+    public RedirectView addRequest(@ModelAttribute BookForm bookForm, @ModelAttribute("requestId") Long requestId) {
         MultipartFile multipartFile = bookForm.getCoverImg();
         String fileName = multipartFile.getOriginalFilename();
-        Book editedBook = new Book(bookForm.getBookId(), fileName, bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
+        Book editedBook = new Book(bookForm.getBookId(),fileName, bookForm.getTitle(), bookForm.getDescription(), bookForm.isDeleted(),
                 bookForm.getPublishedDate(), bookForm.getPages(), bookForm.getCategories(), bookForm.getAuthorId());
         if (fileName.equals("")) {
             Request request = requestService.findById(requestId).get();
