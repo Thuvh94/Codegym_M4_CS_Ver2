@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 @Service
 public class AuthorServiceImpl implements IAuthorService{
@@ -31,5 +32,10 @@ public class AuthorServiceImpl implements IAuthorService{
     @Override
     public void remove(Long id) {
         authorRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Long> findAllAuthorHaveBook() {
+        return  authorRepository.findAllAuthorHaveBook();
     }
 }

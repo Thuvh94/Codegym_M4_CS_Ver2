@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -34,7 +35,7 @@ public class AuthorController {
         return categoryService.findAll();
     }
 
-    @GetMapping
+    @GetMapping("/admin/author")
     public ModelAndView listAuthor(@PageableDefault(size = 10) Pageable pageable) {
         Page<Author> authors = iAuthorService.findAll(pageable);
         ModelAndView modelAndView = new ModelAndView("author/list");
@@ -87,12 +88,19 @@ public class AuthorController {
 
     @GetMapping("/admin/author/{id}/delete")
     public ModelAndView deleteAuthor(@PathVariable Long id,@PageableDefault(size = 10) Pageable pageable) {
-        iAuthorService.remove(id);
-        Page<Author> authors = iAuthorService.findAll(pageable);
         ModelAndView modelAndView = new ModelAndView("author/list");
+        List<Long> authorsHaveBook = iAuthorService.findAllAuthorHaveBook();
+        System.out.println(authorsHaveBook);
+        System.out.println(id);
+        if(authorsHaveBook.contains(id)){
+            modelAndView.addObject("alert","Operation not permitted.");
+        }
+        else {
+            iAuthorService.remove(id);
+        }
+        Page<Author> authors = iAuthorService.findAll(pageable);
         modelAndView.addObject("authors", authors);
         return modelAndView;
-
     }
 
     @GetMapping("/admin/author/{id}")
