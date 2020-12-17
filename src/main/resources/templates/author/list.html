@@ -31,7 +31,7 @@
         <th>Delete</th>
     </tr>
     <tr th:each="author: ${authors}">
-        <td><a th:text="${author.getAuthorId()}" th:href="@{/view-author/__${author.getAuthorId()}__}"></a></td>
+        <td><a th:text="${author.getAuthorId()}" th:href="@{/admin/author/__${author.getAuthorId()}__}"></a></td>
         <td><a  th:text="${author.authorName}" th:href="@{/admin/author/__${author.authorId}__}"></a></td>
         <td><a th:text="${author.getAuthorDesc()}"></a></td>
         <td><a th:href="@{/admin/author/{id}/edit(id = ${author.authorId})}" class="btn btn-primary">Edit</a></td>
