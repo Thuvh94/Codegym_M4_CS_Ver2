@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My book</title>
+</head>
+<body>
+<h1 align="left">My books</h1><hr>
+<table border="1" align="center">
+    <tr>
+        <th>Cover</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Avg rating</th>
+        <th>Rating</th>
+        <th>Shelves</th>
+        <th>Date read</th>
+        <th>Date added</th>
+        <th>Edit</th>
+    </tr>
+    <th:block th:each="book : ${books}">
+        <tr>
+            <td th:text="${book.bookId}"></td>
+            <td><a  th:text="${book.title}" th:href="@{/admin/book/__${book.bookId}__}"></a></td>
+            <td><a  th:text="${book.authorId.authorName}" th:href="@{/admin/author/__${book.authorId.authorId}__}"></a></td>
+            <td>
+                <img th:src="@{'http://localhost:8080/' + ${book.coverImg}}" style="height: 200px;width: 150px">
+            </td>
+            <td th:text="${book.description}"></td>
+            <td th:text="${book.publishedDate}"></td>
+            <td th:text="${book.pages}"></td>
+            <td>
+                    <span th:each="category : ${book.categories}">
+                        <a th:text="${category.categoryName}" th:href="@{/admin/category/__${category.categoryId}__}"></a><br>
+                    </span>
+            </td>
+            <td><a th:href="@{/admin/book/edit/__${book.bookId}__ }">Edit</a></td>
+            <td><a th:href="@{/admin/book/delete/__${book.bookId}__ }">Delete</a></td>
+        </tr>
+    </th:block>
+</table>
+<div>
+    <a th:href="@{'/book'(page=${books.number - 1})}" th:if="${books.hasPrevious()}">Previous</a>
+    <span th:text="${books.number + 1}"></span>/<span th:text="${books.totalPages}"></span>
+    <a th:href="@{'/book'(page=${books.number + 1})}" th:if="${books.hasNext()}">Next</a>
+</div>
+</body>
+</html>

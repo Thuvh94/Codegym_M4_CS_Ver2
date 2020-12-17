@@ -18,7 +18,7 @@ public class User_Book {
     @ManyToOne
     private User userId;
 //
-    private int status;
+    private int status; // 0: want to read, 1: reading, 2: read
 
     public User_Book() {
     }
